@@ -19,7 +19,7 @@ Four datasets and six model objects are included in the project.
 **Bayesian Model Objects** There are six model objects included in this project used in the main paper. These provide the model information without needing to run computationally intensive models again. Code to create each model is included in the R scripts.
 
 ### **R Scripts** 
-Fourscripts are provided in this repository.
+Four scripts are provided in this repository.
 
 **Main_Analysis.R** Includes all data , model objects, and code to conduct analyses and produce figures found in the main manuscript. This code produces Figure 1-3 and Figures S1a-f.
 
