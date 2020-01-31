@@ -2,13 +2,12 @@
 Synthesis of seed addition diversity experiments effect on species richness and ecosystem function
 
 Code DOI:
+Data DOI:
 
 This project uses **seed addition experimental data** , and includes the **summarised data**  used for analyses and models,  the **model objects**, and the **R scripts** to investigate and understand models, process data, and generate results and figures.
 
 ### Data
-Four datasets and six model objects are included in the project.
-
-**Species Level Data** For species level data please contact lead author.
+Three datasets and six model objects associated with this project are found on DRYAD DOI lsted above.
 
 **Plot Level Data** These data summarise species richness and aboveground level biomass responses to a range of diverse seeding treatments across 12 seed addition and diversity experiments.
 
@@ -17,6 +16,8 @@ Four datasets and six model objects are included in the project.
 **Effective Number of Species** These data summarise the effective number of species responses to a range of diverse seeding treatments across 12 seed addition and diversity experiments.
 
 **Bayesian Model Objects** There are six model objects included in this project used in the main paper. These provide the model information without needing to run computationally intensive models again. Code to create each model is included in the R scripts.
+
+**Species Level Data** For species level data please contact lead author.
 
 ### **R Scripts** 
 Four scripts are provided in this repository.
