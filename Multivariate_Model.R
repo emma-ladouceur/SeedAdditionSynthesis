@@ -15,7 +15,7 @@ library(gridExtra)
 library(grid)
 library(bayesplot)
 
-setwd('~/Desktop/Academic/R code/SeedAdditionSynthesis/'))
+setwd('~/Desktop/Academic/R code/SeedAdditionSynthesis/')
 plot<-read.csv("./Data/SeedAdd_Plot_Level.csv", header=TRUE) %>%
   as_tibble()
 
