@@ -49,7 +49,8 @@ grid_arrange_shared_legend <- function(..., ncol = length(list(...)), nrow = 1, 
 }
 
 # Data
-setwd('~/Desktop/Academic/R code/SeedAdditionSynthesis/')
+#setwd('~/Desktop/Academic/R code/SeedAdditionSynthesis/')
+setwd('~/Dropbox/Projects/SeedAddDraft/')
 plot<-read.csv("./Data/SeedAdd_Plot_Level.csv", header=TRUE) %>%
   as_tibble()
 

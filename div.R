@@ -21,7 +21,8 @@ library(bayesplot)
 
 
 # Data
-setwd('~/Desktop/Academic/R code/SeedAdditionSynthesis/'))
+#setwd('~/Desktop/Academic/R code/SeedAdditionSynthesis/'))
+setwd('~/Dropbox/Projects/SeedAddDraft/')
 spdat<-read.csv("./Data/SeedAdd_Sp_level.csv", header=TRUE) 
 
 spdat.bm<- spdat %>% select(unique.id_,species,biomass.sp)
@@ -74,7 +75,8 @@ summary(seed.pie)
 
 # Diversity Models
 
-setwd('~/Desktop/Academic/R code/SeedAdditionSynthesis/')
+#setwd('~/Desktop/Academic/R code/SeedAdditionSynthesis/')
+setwd('~/Dropbox/Projects/SeedAddDraft/')
 spdat<-read.csv("./Data/seed.pie.csv", header=TRUE) %>%
   as_tibble()
 

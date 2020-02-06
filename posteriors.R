@@ -1,4 +1,9 @@
-
+# #################################################################### ####
+# Title: Comparing the effects of seeded diversity on species richness ####
+#        and above ground biomass , and community assembly             #### 
+# Authors: Emma R Ladouceur & Shane A. Blowes                          ####
+# Details: Supplementary Information Section 4                         ####
+# #################################################################### ####
 
 
 library(tidyverse)
@@ -8,7 +13,7 @@ library(gridExtra)
 library(grid)
 
 
-setwd('~/Desktop/Academic/R code/SeedAdditionSynthesis/')
+#setwd('~/Desktop/Academic/R code/SeedAdditionSynthesis/')
 setwd('~/Dropbox/Projects/SeedAddDraft/')
 load("./Model Fits/rich.Rdata") # object name: seedadd.rich
 load("./Model Fits/biomass.Rdata") # object name: seedadd.biomass
