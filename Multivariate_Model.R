@@ -31,11 +31,14 @@ plot$l.biomass <- log(plot$biomass.plot)
 plot$Experiment<-plot$Experiment_
 head(plot)
 
+summary(plot)
+plot2<-plot %>% drop_na(live_mass)
+
 # load model object
 load("./Model Fits/multi.Rdata") # object name: seedadd.multi
 
-# seedadd.multi <- brm(cbind(rich.plot, l.biomass) ~  seed.rich.m + (seed.rich.m | p | Experiment), 
-#               data = plot, cores = 4, chains = 4)
+ seedadd.multi <- brm(cbind(rich.plot, l.biomass) ~  seed.rich.m + (seed.rich.m | p | Experiment/block/plot), 
+               data = plot, cores = 4, chains = 4)
 
 
 # check  correlation coefficients between variables

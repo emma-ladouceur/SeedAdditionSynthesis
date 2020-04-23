@@ -15,10 +15,11 @@ library(betapart)
 library(tibble) 
 library(tidyverse)
 library(bayesplot)
+library(patchwork)
 
 
 
-setwd('~/Desktop/Academic/R code/SeedAdditionSynthesis/'))
+setwd('~/Desktop/Academic/R code/SeedAdditionSynthesis/')
 plot<-read.csv("./Data/SeedAdd_Plot_Level.csv", header=TRUE) %>%
   as_tibble()
 
@@ -154,10 +155,11 @@ beta.df = wide.df %>%
 
 
 # write.csv(beta.df,"./Data/beta.df.csv")
-
-setwd('~/Desktop/Academic/R code/SeedAdditionSynthesis/')
+setwd('~/Dropbox/Projects/SeedAddDraft/')
 beta<-read.csv("./Data/beta.df.csv", header=TRUE) %>%
   as_tibble()
+
+beta$Experiment<-beta$Experiment_
 
 # Load model objects
 load("./Model Fits/betat.Rdata") # object name: turnover.zoib
@@ -286,22 +288,19 @@ betan_fixef_df$Model<-'Nestedness'
 fixef.all<-bind_rows(betat_fixef_df,betan_fixef_df)
 
 
-coef.all$Experiment<-as.factor(coef.all$Experiment)
-
-
 library(plyr)
-betat_exp_coef2$Study<-revalue(betat_exp_coef2$Experiment, c("ASGA_Michigan"="Michigan.us", "California_Invade"="California.I.us","CCR_04"="CedarCreek4.us","CCR_093"="CedarCreek93.us","Germany_Montane"="Montane.de","Halle"="Halle.de","Jena"="Jena.de","Jena2"="Jena2.de","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow.us","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field.us","Texas_Temple_Prarie"="Texas.Templ.Prairie.us"))
-betan_exp_coef2$Study<-revalue(betan_exp_coef2$Experiment, c("ASGA_Michigan"="Michigan.us", "California_Invade"="California.I.us","CCR_04"="CedarCreek4.us","CCR_093"="CedarCreek93.us","Germany_Montane"="Montane.de","Halle"="Halle.de","Jena"="Jena.de","Jena2"="Jena2.de","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow.us","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field.us","Texas_Temple_Prarie"="Texas.Templ.Prairie.us"))
+betat_exp_coef2$Study<-revalue(betat_exp_coef2$Experiment, c("ASGA_Michigan"="Michigan.us", "California_Invade"="California.I.us","CCR_04"="CedarCreek4.us","CCR_093"="CedarCreek93.us","Germany_Montane"="Montane.de","Halle"="Halle.de","Jena"="Jena.de","Jena2"="Jena2.de","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow.us","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field.us","Texas_Temple_Prarie"="Texas.Temple.Prairie.us"))
+betan_exp_coef2$Study<-revalue(betan_exp_coef2$Experiment, c("ASGA_Michigan"="Michigan.us", "California_Invade"="California.I.us","CCR_04"="CedarCreek4.us","CCR_093"="CedarCreek93.us","Germany_Montane"="Montane.de","Halle"="Halle.de","Jena"="Jena.de","Jena2"="Jena2.de","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow.us","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field.us","Texas_Temple_Prarie"="Texas.Temple.Prairie.us"))
 
 betat_exp_coef2$Study<-factor(as.character(betat_exp_coef2$Study))
 betan_exp_coef2$Study<-factor(as.character(betan_exp_coef2$Study))
 
 
 tc<-ggplot() + 
-  geom_point(data = betat_exp_coef2, aes(x = Study, y = Slope,colour = Study),size = 4) +
+  geom_point(data = betat_exp_coef2, aes(x = Study, y = Slope,colour = Study),size = 2) +
   geom_errorbar(data = betat_exp_coef2, aes(x = Study,ymin = Slope_lower,
                                             ymax = Slope_upper,colour = Study),
-                width = 0, size = 1.5) + 
+                width = 0, size = 1) + 
   geom_hline(yintercept = 0, lty = 2) +
   geom_hline(data = filter(fixef.all, Model=='Turnover'),
              aes(yintercept = Estimate[2]), size = 1.2) +
@@ -310,7 +309,7 @@ tc<-ggplot() +
                 ymin = Q2.5[2], ymax = Q97.5[2]),
             alpha = 0.3) +
   labs(x = 'Study',
-       y = 'Slope', title= "a) Turnover") +
+       y = 'Turnover / species of seed added', subtitle= "a) Turnover") +
   scale_colour_manual(values = c( "#EE0011FF" , "#EC579AFF", "#15983DFF", "#149BEDFF", "#0C5BB0FF", "#8F2F8BFF", "#F9B90AFF", "#16A08CFF" ,"#6A7F93FF","#FA6B09FF","#A1C720FF","#9A703EFF" ))+
   scale_x_discrete(limits = rev(levels(betat_exp_coef2$Study)))+
   coord_flip() + 
@@ -320,10 +319,10 @@ tc<-ggplot() +
 
 
 nc<-ggplot() + 
-  geom_point(data = betan_exp_coef2, aes(x = Study, y = Slope,colour = Study),size = 4) +
+  geom_point(data = betan_exp_coef2, aes(x = Study, y = Slope,colour = Study),size = 2) +
   geom_errorbar(data = betan_exp_coef2, aes(x = Study,ymin = Slope_lower,
                                             ymax = Slope_upper,colour = Study),
-                width = 0, size = 1.5) +
+                width = 0, size = 1) +
   geom_hline(yintercept = 0, lty = 2) +
   geom_hline(data = filter(fixef.all, Model=='Nestedness'),
              aes(yintercept = Estimate[2]), size = 1.2) +
@@ -332,13 +331,23 @@ nc<-ggplot() +
                 ymin = Q2.5[2], ymax = Q97.5[2]),
             alpha = 0.3) +
   labs(x = 'Study',
-       y = 'Slope', title = "b) Nestedness") +
+       y = 'Nestedness / species of seed added', subtitle = "b) Nestedness") +
   scale_colour_manual(values = c( "#EE0011FF" , "#EC579AFF", "#15983DFF", "#149BEDFF", "#0C5BB0FF", "#8F2F8BFF", "#F9B90AFF", "#16A08CFF" ,"#6A7F93FF","#FA6B09FF","#A1C720FF","#9A703EFF" ))+
   scale_x_discrete(limits = rev(levels(betan_exp_coef2$Study)))+coord_flip() + 
   theme_bw()+theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), strip.background = element_rect(colour="black", fill="white"),legend.position="bottom",axis.title.y=element_blank(),
                    axis.text.y=element_blank(),
                    axis.ticks.y=element_blank())
 
-# Figure S4
-grid_arrange_shared_legend(tc,nc,nrow=1)
+#extract legend
+#https://github.com/hadley/ggplot2/wiki/Share-a-legend-between-two-ggplot2-graphs
+g_legend<-function(a.gplot){
+  tmp <- ggplot_gtable(ggplot_build(a.gplot))
+  leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box")
+  legend <- tmp$grobs[[leg]]
+  return(legend)}
 
+b.legend<-g_legend(tc)
+
+
+(tc+ theme(legend.position="none") | nc+ theme(legend.position="none"))/(b.legend)  +
+  plot_layout(heights = c(10,1))

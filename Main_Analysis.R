@@ -15,38 +15,8 @@ library(ggplot2)
 library(gridExtra)
 library(grid)
 library(bayesplot)
+library(patchwork)
 
-# TIDYVERSE SHARED LEGEND (to make plots)
-# https://github.com/tidyverse/ggplot2/wiki/Share-a-legend-between-two-ggplot2-graphs
-
-grid_arrange_shared_legend <- function(..., ncol = length(list(...)), nrow = 1, position = c("bottom", "right")) {
-  
-  plots <- list(...)
-  position <- match.arg(position)
-  g <- ggplotGrob(plots[[1]] + theme(legend.position = position))$grobs
-  legend <- g[[which(sapply(g, function(x) x$name) == "guide-box")]]
-  lheight <- sum(legend$height)
-  lwidth <- sum(legend$width)
-  gl <- lapply(plots, function(x) x + theme(legend.position="none"))
-  gl <- c(gl, ncol = ncol, nrow = nrow)
-  
-  combined <- switch(position,
-                     "bottom" = arrangeGrob(do.call(arrangeGrob, gl),
-                                            legend,
-                                            ncol = 1,
-                                            heights = unit.c(unit(1, "npc") - lheight, lheight)),
-                     "right" = arrangeGrob(do.call(arrangeGrob, gl),
-                                           legend,
-                                           ncol = 2,
-                                           widths = unit.c(unit(1, "npc") - lwidth, lwidth)))
-  
-  grid.newpage()
-  grid.draw(combined)
-  
-  # return gtable invisibly
-  invisible(combined)
-  
-}
 
 # Data
 #setwd('~/Desktop/Academic/R code/SeedAdditionSynthesis/')
@@ -79,6 +49,7 @@ load("./Model Fits/biomass.Rdata") # object name: seedadd.biomass
 
 # richness model summary
 summary(seedadd.rich)
+summary(seedadd.biomass)
 
 # Figure S1a
 color_scheme_set("darkgray")
@@ -196,15 +167,15 @@ biomass_exp_coef2 <-  bind_cols(biomass_exp_coef$Experiment[,,'Intercept'] %>%
 # to create figures
 
 library(plyr)
-S_seed_fitted$Study<-revalue(S_seed_fitted$Experiment, c("ASGA_Michigan"="Michigan.us", "California_Invade"="California.I.us","California_Prop_Limi"="California.P.L.us","CCR_04"="CedarCreek4.us","CCR_093"="CedarCreek93.us","Germany_Montane"="Montane.de","Halle"="Halle.de","Jena"="Jena.de","Jena2"="Jena2.de","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow.us","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field.us","Texas_Temple_Prarie"="Texas.Templ.Prairie.us"))
-S_seed_exp_coef2$Study<-revalue(S_seed_exp_coef2$Experiment, c("ASGA_Michigan"="Michigan.us", "California_Invade"="California.I.us","California_Prop_Limi"="California.P.L.us","CCR_04"="CedarCreek4.us","CCR_093"="CedarCreek93.us","Germany_Montane"="Montane.de","Halle"="Halle.de","Jena"="Jena.de","Jena2"="Jena2.de","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow.us","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field.us","Texas_Temple_Prarie"="Texas.Templ.Prairie.us"))
+S_seed_fitted$Study<-revalue(S_seed_fitted$Experiment, c("ASGA_Michigan"="Michigan.us", "California_Invade"="California.I.us","California_Prop_Limi"="California.P.L.us","CCR_04"="CedarCreek4.us","CCR_093"="CedarCreek93.us","Germany_Montane"="Montane.de","Halle"="Halle.de","Jena"="Jena.de","Jena2"="Jena2.de","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow.us","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field.us","Texas_Temple_Prarie"="Texas.Temple.Prairie.us"))
+S_seed_exp_coef2$Study<-revalue(S_seed_exp_coef2$Experiment, c("ASGA_Michigan"="Michigan.us", "California_Invade"="California.I.us","California_Prop_Limi"="California.P.L.us","CCR_04"="CedarCreek4.us","CCR_093"="CedarCreek93.us","Germany_Montane"="Montane.de","Halle"="Halle.de","Jena"="Jena.de","Jena2"="Jena2.de","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow.us","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field.us","Texas_Temple_Prarie"="Texas.Temple.Prairie.us"))
 
 S_seed_fitted$Study<-factor(as.character(S_seed_fitted$Study))
 S_seed_exp_coef2$Study<-factor(as.character(S_seed_exp_coef2$Study))
 
 
-biomass_fitted$Study<-revalue(biomass_fitted$Experiment, c("ASGA_Michigan"="Michigan.us", "California_Invade"="California.I.us","California_Prop_Limi"="California.P.L.us","CCR_04"="CedarCreek4.us","CCR_093"="CedarCreek93.us","Germany_Montane"="Montane.de","Halle"="Halle.de","Jena"="Jena.de","Jena2"="Jena2.de","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow.us","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field.us","Texas_Temple_Prarie"="Texas.Templ.Prairie.us"))
-biomass_exp_coef2$Study<-revalue(biomass_exp_coef2$Experiment, c("ASGA_Michigan"="Michigan.us", "California_Invade"="California.I.us","California_Prop_Limi"="California.P.L.us","CCR_04"="CedarCreek4.us","CCR_093"="CedarCreek93.us","Germany_Montane"="Montane.de","Halle"="Halle.de","Jena"="Jena.de","Jena2"="Jena2.de","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow.us","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field.us","Texas_Temple_Prarie"="Texas.Templ.Prairie.us"))
+biomass_fitted$Study<-revalue(biomass_fitted$Experiment, c("ASGA_Michigan"="Michigan.us", "California_Invade"="California.I.us","California_Prop_Limi"="California.P.L.us","CCR_04"="CedarCreek4.us","CCR_093"="CedarCreek93.us","Germany_Montane"="Montane.de","Halle"="Halle.de","Jena"="Jena.de","Jena2"="Jena2.de","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow.us","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field.us","Texas_Temple_Prarie"="Texas.Temple.Prairie.us"))
+biomass_exp_coef2$Study<-revalue(biomass_exp_coef2$Experiment, c("ASGA_Michigan"="Michigan.us", "California_Invade"="California.I.us","California_Prop_Limi"="California.P.L.us","CCR_04"="CedarCreek4.us","CCR_093"="CedarCreek93.us","Germany_Montane"="Montane.de","Halle"="Halle.de","Jena"="Jena.de","Jena2"="Jena2.de","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow.us","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field.us","Texas_Temple_Prarie"="Texas.Temple.Prairie.us"))
 
 biomass_fitted$Study<-factor(as.character(biomass_fitted$Study))
 biomass_exp_coef2$Study<-factor(as.character(biomass_exp_coef2$Study))
@@ -217,13 +188,13 @@ biomass_fixef_df<-as.data.frame((biomass_fixef))
 S_seed_fixef_df$Model<-'Richness'
 biomass_fixef_df$Model<-'Biomass'
 fixef.all<-bind_rows(S_seed_fixef_df,biomass_fixef_df)
+fixef.all
 
-
-rc<-ggplot() + 
-  geom_point(data = S_seed_exp_coef2, aes(x = Study, y = Slope,colour = Study),size = 4) +
+ra<-ggplot() + 
+  geom_point(data = S_seed_exp_coef2, aes(x = Study, y = Slope,colour = Study),size = 2) +
   geom_errorbar(data = S_seed_exp_coef2, aes(x = Study,ymin = Slope_lower,
                                              ymax = Slope_upper,colour = Study),
-                width = 0, size = 1.5) + 
+                width = 0, size = 1) + 
   geom_hline(yintercept = 0, lty = 2) +
   geom_hline(data = filter(fixef.all, Model=='Richness'),
              aes(yintercept = Estimate[2]), size = 1.2) +
@@ -232,18 +203,21 @@ rc<-ggplot() +
                 ymin = Q2.5[2], ymax = Q97.5[2]),
             alpha = 0.3) +
   labs(x = 'Study',
-       y = 'Slope', title= "a) Richness") +
+       y = 'Species Richness / species of seed added', title= "Species Richness",
+       subtitle="a)") +
   scale_colour_manual(values = c( "#EE0011FF" , "#EC579AFF", "#15983DFF", "#149BEDFF", "#0C5BB0FF", "#8F2F8BFF", "#F9B90AFF", "#16A08CFF" ,"#6A7F93FF","#FA6B09FF","#A1C720FF","#9A703EFF" ))+
   scale_x_discrete(limits = rev(levels(S_seed_exp_coef2$Study)))+coord_flip() + 
-  theme_bw()+theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), strip.background = element_rect(colour="black", fill="white"),legend.position="bottom",axis.title.y=element_blank(),
-                   axis.text.y=element_blank(),
+  theme_bw()+theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), strip.background = element_rect(colour="black", fill="white"),legend.position="none",
+                   #axis.title.y=element_blank(),
+                  axis.text.y=element_blank(),
                    axis.ticks.y=element_blank())
 
+
 bc<-ggplot() + 
-  geom_point(data = biomass_exp_coef2, aes(x = Study, y = Slope,colour = Study),size = 4) +
+  geom_point(data = biomass_exp_coef2, aes(x = Study, y = Slope,colour = Study),size = 2) +
   geom_errorbar(data = biomass_exp_coef2, aes(x = Study,ymin = Slope_lower,
                                               ymax = Slope_upper,colour = Study),
-                width = 0, size = 1.5) +
+                width = 0, size = 1) +
   geom_hline(yintercept = 0, lty = 2) +
   geom_hline(data = filter(fixef.all, Model=='Biomass'),
              aes(yintercept = Estimate[2]), size = 1.2) +
@@ -252,10 +226,12 @@ bc<-ggplot() +
                 ymin = Q2.5[2], ymax = Q97.5[2]),
             alpha = 0.3) +
   labs(x = 'Study',
-       y = 'Slope', title = expression(paste('b) Biomass [log(g/',m^2, ')]'))) +
+       y = expression(paste( 'Biomass [log(g/',m^2,')] / species of seed added')), title = 'Biomass',
+       subtitle= "a)") +
   scale_colour_manual(values = c( "#EE0011FF" , "#EC579AFF", "#15983DFF", "#149BEDFF", "#0C5BB0FF", "#8F2F8BFF", "#F9B90AFF", "#16A08CFF" ,"#6A7F93FF","#FA6B09FF","#A1C720FF","#9A703EFF" ))+
   scale_x_discrete(limits = rev(levels(biomass_exp_coef2$Study)))+coord_flip() + 
-  theme_bw()+theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), strip.background = element_rect(colour="black", fill="white"),legend.position="bottom",axis.title.y=element_blank(),
+  theme_bw()+theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), strip.background = element_rect(colour="black", fill="white"),legend.position="none",
+                   #axis.title.y=element_blank(),
                    axis.text.y=element_blank(),
                    axis.ticks.y=element_blank())
 
@@ -264,7 +240,7 @@ grid_arrange_shared_legend(rc,bc,nrow=1)
 
 # Figure 2 a) Richness
 
-r1<-ggplot() +
+rb<-ggplot() +
   geom_point(data = S_seed_fitted,
              aes(x = seed.rich, y = rich.plot,
                  colour = Study),
@@ -286,15 +262,16 @@ r1<-ggplot() +
             aes(x = seed.rich, y = Estimate),
             size = 1.5) +
   #scale_y_continuous(trans = 'log', breaks = c(2,4,8,16.24,36,48,64)) +
-  labs(x = 'Number of species added ',
-       y = 'Species richness', title= 'a) Richness') +
+  labs(x = 'Number of species of seed added ',
+       y = 'Species richness', title= '', subtitle= "b)") +
   scale_colour_manual(values = c( "#EE0011FF" , "#EC579AFF", "#15983DFF", "#149BEDFF", "#0C5BB0FF", "#8F2F8BFF", "#F9B90AFF", "#16A08CFF" ,"#6A7F93FF","#FA6B09FF","#A1C720FF","#9A703EFF" ))+
-  theme_bw() + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), strip.background = element_rect(colour="black", fill="white"))
+  theme_bw() + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), strip.background = element_rect(colour="black", fill="white"),
+                                                                                                                             legend.position="bottom")
 
 
 # Figure 2 b) Biomass
 
-b1<-ggplot() +
+bd<-ggplot() +
   geom_point(data = biomass_fitted,
              aes(x = seed.rich, y = biomass.plot,
                  colour = Study),
@@ -317,19 +294,37 @@ b1<-ggplot() +
             aes(x = seed.rich, y = exp(Estimate)),
             size = 1.5) +
   scale_y_continuous(trans = 'log', breaks = c(8, 64, 512, 1024, 2048)) +
-  labs(x = 'Number of species added ',
-       y = expression(paste('Biomass [log(g/',m^2, ')]')), title='b) Biomass') +
+  labs(x = 'Number of species of seed added ',
+       y = expression(paste('Biomass [log(g/',m^2, ')]')), title='', subtitle="b)") +
   scale_colour_manual(values = c( "#EE0011FF" , "#EC579AFF", "#15983DFF", "#149BEDFF", "#0C5BB0FF", "#8F2F8BFF", "#F9B90AFF", "#16A08CFF" ,"#6A7F93FF","#FA6B09FF","#A1C720FF","#9A703EFF" ))+
-  theme_bw() + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), strip.background = element_rect(colour="black", fill="white"))
+  theme_bw() + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), strip.background = element_rect(colour="black", fill="white"),
+                     legend.position="bottom")
 
-# Figure 2
-grid_arrange_shared_legend(r1,b1,nrow=1)
+#extract legend
+#https://github.com/hadley/ggplot2/wiki/Share-a-legend-between-two-ggplot2-graphs
+g_legend<-function(a.gplot){
+  tmp <- ggplot_gtable(ggplot_build(a.gplot))
+  leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box")
+  legend <- tmp$grobs[[leg]]
+  return(legend)}
+
+m.legend<-g_legend(bd)
+
+(ra | rb)/(bc | bd+ theme(legend.position="none"))/(m.legend)  +
+  plot_layout(heights = c(10,10,2.5))
+
+
+(ra | rb+ theme(legend.position="none"))/(m.legend)  +
+  plot_layout(heights = c(10,1))
+
+(bc | bd+ theme(legend.position="none"))/(m.legend)  +
+  plot_layout(heights = c(10,1))
 
 
 
 # Figure 3 prep
-S_seed_exp_coef3<-S_seed_exp_coef2[,c(-1,-2,-3,-8,-9,-10,-11,-13)]
-biomass_exp_coef3<-biomass_exp_coef2[,c(-1,-2,-3,-8,-9,-10,-11,-13)]
+S_seed_exp_coef3<-S_seed_exp_coef2[,c(-1,-2,-3,-8,-9,-10,-11)]
+biomass_exp_coef3<-biomass_exp_coef2[,c(-1,-2,-3,-8,-9,-10,-11)]
 colnames(S_seed_exp_coef2)
 colnames(biomass_exp_coef3)
 names(S_seed_exp_coef3) <- c("Experiment","R.Slope","R.Slope_lower","R.Slope_upper","Study")
@@ -337,19 +332,19 @@ names(biomass_exp_coef3) <- c("Experiment","B.Slope","B.Slope_lower","B.Slope_up
 delta.coefs<-bind_cols(S_seed_exp_coef3,biomass_exp_coef3)
 
 
-delta.coefs$Study<-revalue(delta.coefs$Experiment, c("ASGA_Michigan"="Michigan.us", "California_Invade"="California.I.us","California_Prop_Limi"="California.P.L.us","CCR_04"="CedarCreek4.us","CCR_093"="CedarCreek93.us","Germany_Montane"="Montane.de","Halle"="Halle.de","Jena"="Jena.de","Jena2"="Jena2.de","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow.us","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field.us","Texas_Temple_Prarie"="Texas.Templ.Prairie.us"))
+delta.coefs$Study<-revalue(delta.coefs$Experiment, c("ASGA_Michigan"="Michigan.us", "California_Invade"="California.I.us","California_Prop_Limi"="California.P.L.us","CCR_04"="CedarCreek4.us","CCR_093"="CedarCreek93.us","Germany_Montane"="Montane.de","Halle"="Halle.de","Jena"="Jena.de","Jena2"="Jena2.de","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow.us","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field.us","Texas_Temple_Prarie"="Texas.Temple.Prairie.us"))
 
 delta.coefs$Study<-factor(as.character(delta.coefs$Study))
 
 
 # Figure 3
 ggplot(data=delta.coefs, aes(x=R.Slope, y=B.Slope,color=Study)) +
-  geom_point(size=4) +
+  geom_point(size=2) +
   geom_errorbar(aes(ymin = B.Slope_lower, ymax = B.Slope_upper,colour = Study), width = 0, size = 0.75,alpha=0.5) +
   geom_errorbarh(aes(xmin = R.Slope_lower, xmax = R.Slope_upper,colour = Study), width = 0, size = 0.75,alpha=0.5) +
   scale_colour_manual(values = c( "#EE0011FF" , "#EC579AFF", "#15983DFF", "#149BEDFF", "#0C5BB0FF", "#8F2F8BFF", "#F9B90AFF", "#16A08CFF" ,"#6A7F93FF","#FA6B09FF","#A1C720FF","#9A703EFF" ))+
-  labs(x = 'Species Richness Slope',
-       y = expression(paste('Biomass Slope [log(g/',m^2, ')]'))) +
+  labs(x = 'Species Richness Slope / number of species of seed added ',
+       y = expression(paste('Biomass Slope [log(g/',m^2, ')] / number of species of seed added'))) +
   geom_vline(xintercept = 0) + geom_hline(yintercept = 0) + theme_classic()+theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), strip.background = element_rect(colour="black", fill="white"),legend.position="bottom")
 
 
