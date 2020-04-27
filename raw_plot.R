@@ -1,8 +1,8 @@
 # #################################################################### ####
 # Title: Comparing the effects of seeded diversity on species richness ####
 #        and above ground biomass , and community assembly             #### 
-# Authors: Emma R Ladouceur & Shane A. Blowes                           ####
-# Details: Figure S2                                                   ####
+# Authors: Emma R Ladouceur & Shane A. Blowes                          ####
+# Details: Figure S1                                                   ####
 # #################################################################### ####
 
 rm(list=ls())

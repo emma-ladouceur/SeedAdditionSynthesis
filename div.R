@@ -78,36 +78,38 @@ summary(seed.pie)
 
 #setwd('~/Desktop/Academic/R code/SeedAdditionSynthesis/')
 setwd('~/Dropbox/Projects/SeedAddDraft/')
-seed.pie<-read.csv("./Data/seed.pie.csv", header=TRUE) %>%
+seed.pie.d<-read.csv("./Data/seed.pie.csv", header=TRUE) %>%
   as_tibble()
 
 
-levels(seed.pie$Experiment)
-seed.pie$Experiment<-seed.pie$Experiment_
-seed.pie$fyr.trt<-as.factor(seed.pie$yr.trt)
-seed.pie$seed.rich<-as.numeric(as.character(seed.pie$seed.rich))
-seed.pie$site<-as.factor(seed.pie$site)
-seed.pie$block<-as.factor(seed.pie$block)
-seed.pie$seed.rich.m<-seed.pie$seed.rich-mean(seed.pie$seed.rich)
-seed.pie$l.b.pie <- log(seed.pie$biomass.pie)
+levels(seed.pie.d$Experiment)
+seed.pie.d$Experiment<-seed.pie.d$Experiment_
+seed.pie.d$fyr.trt<-as.factor(seed.pie.d$yr.trt)
+seed.pie.d$seed.rich<-as.numeric(as.character(seed.pie.d$seed.rich))
+seed.pie.d$site<-as.factor(seed.pie.d$site)
+seed.pie.d$block<-as.factor(seed.pie.d$block)
+seed.pie.d$seed.rich.m<-seed.pie.d$seed.rich-mean(seed.pie.d$seed.rich)
+seed.pie.d$l.b.pie <- log(seed.pie.d$biomass.pie)
 
-hist(seed.pie$biomass.pie)
-hist(seed.pie$l.b.pie)
+hist(seed.pie.d$biomass.pie)
+hist(seed.pie.d$l.b.pie)
 
 # load model object
 load("./Model Fits/seed.pie.Rdata") # object name: m.seed.pie
 
-# seed.pie <- brm(biomass.pie ~  seed.rich.m + (seed.rich.m | Experiment/site/block/fyr.trt),
-#                      data = seed.pie, cores = 4, chains = 4)
+seed.pie <- brm(biomass.pie ~  seed.rich.m + (seed.rich.m | Experiment/site/block/fyr.trt),
+                     data = seed.pie, cores = 4, chains = 4)
 
+setwd('~/Dropbox/Projects/SeedAdd/Model_fits/')
+save(seed.pie, file = './seed.pie.Rdata')
 
-summary(m.seed.pie)
+summary(seed.pie)
 
 plot(m.seed.pie)
 
 # Figure S1 c
 color_scheme_set("darkgray")
-pp_check(m.seed.pie) + theme_classic()
+pp_check(seed.pie) + theme_classic()
 
 # residuals from model
 m2<-residuals(m.seed.pie)
@@ -125,16 +127,16 @@ with(rb.plot, plot(seed.rich, m2$Estimate));abline(h=0, lty=2)
 
 # make sure to detach plyr at top
 
-pie_fitted <- cbind(m.seed.pie$data,
-                    fitted(m.seed.pie, re_formula = NA))  %>%
+pie_fitted <- cbind(seed.pie$data,
+                    fitted(seed.pie, re_formula = NA))  %>%
   as_tibble() %>%
-   inner_join(seed.pie %>% distinct(Experiment, site,block, fyr.trt, seed.rich, seed.rich.m, biomass.pie),
+   inner_join(seed.pie.d %>% distinct(Experiment, site,block, fyr.trt, seed.rich, seed.rich.m, biomass.pie),
             by = c('Experiment','site','block','fyr.trt', 'seed.rich.m','biomass.pie'))
 
 
-pie_fixef <- fixef(m.seed.pie)
+pie_fixef <- fixef(seed.pie)
 
-pie_exp_coef <- coef(m.seed.pie)
+pie_exp_coef <- coef(seed.pie)
 
 pie_exp_coef2 <-  bind_cols(pie_exp_coef$Experiment[,,'Intercept'] %>% 
                               as_tibble() %>% 
@@ -155,7 +157,7 @@ seed.pie$seed.rich<-as.numeric(as.character(seed.pie$seed.rich))
 
 
 pie_exp_coef3 <- pie_exp_coef2 %>%  
-  left_join(seed.pie %>% 
+  left_join(seed.pie.d %>% 
                group_by(Experiment) %>% 
                summarise(xmin = min(seed.rich),
                          xmax = max(seed.rich),
@@ -174,6 +176,8 @@ pie_exp_coef3$Study<-revalue(pie_exp_coef3$Experiment, c("ASGA_Michigan"="Michig
 
 pie_fitted$Study<-factor(as.character(pie_fitted$Study))
 pie_exp_coef3$Study<-factor(as.character(pie_exp_coef3$Study))
+
+
 
 # regression
 dr <- ggplot() +

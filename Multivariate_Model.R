@@ -37,10 +37,14 @@ plot2<-plot %>% drop_na(live_mass)
 # load model object
 load("./Model Fits/multi.Rdata") # object name: seedadd.multi
 
- seedadd.multi <- brm(cbind(rich.plot, l.biomass) ~  seed.rich.m + (seed.rich.m | p | Experiment/block/plot), 
+ seedadd.multi <- brm(mvbind(rich.plot, l.biomass) ~  seed.rich.m + (seed.rich.m | p | Experiment), 
                data = plot, cores = 4, chains = 4)
 
 
+ setwd('~/Dropbox/Projects/SeedAdd/Model_fits/')
+ save(seedadd.multi, file = './multi.Rdata')
+ 
+ 
 # check  correlation coefficients between variables
 summary(seedadd.multi)
 
@@ -49,7 +53,7 @@ plot(seedadd.multi)
 pmb2<-pp_check(seedadd.multi, resp = 'lbiomass')+ theme_classic()
 pmr2<-pp_check(seedadd.multi, resp = 'richplot')+ theme_classic()
 # Figure S1 f
-grid_arrange_shared_legend(pmr2,pmb2,nrow=1,ncol=2) 
+(pmr2 | pmb2)
 
 
 mm1<-residuals(seedadd.multi)
@@ -145,6 +149,8 @@ colnames(mm_coefb2)
 names(mm_coefr2) <- c("Experiment","R.Slope","R.Slope_lower","R.Slope_upper")
 names(mm_coefb2) <- c("Experiment","B.Slope","B.Slope_lower","B.Slope_upper")
 m.delta.coefs<-bind_cols(mm_coefr2,mm_coefb2)
+
+
 
 library(plyr)
 m.delta.coefs$Study<-revalue(m.delta.coefs$Experiment, c("ASGA_Michigan"="Michigan.us", "California_Invade"="California.I.us","California_Prop_Limi"="California.P.L.us","CCR_04"="CedarCreek4.us","CCR_093"="CedarCreek93.us","Germany_Montane"="Montane.de","Halle"="Halle.de","Jena"="Jena.de","Jena2"="Jena2.de","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow.us","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field.us","Texas_Temple_Prarie"="Texas.Templ.Prairie.us"))

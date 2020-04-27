@@ -39,12 +39,16 @@ plot$Experiment<-plot$Experiment_
 load("./Model Fits/rich.Rdata") # object name: seedadd.rich
 load("./Model Fits/biomass.Rdata") # object name: seedadd.biomass
 
-# seedadd.rich<- brm(rich.plot ~  seed.rich.m + (seed.rich.m | Experiment/site/block/fyr.trt), 
-#                  data = plot, cores = 4, chains = 4)
+seedadd.rich<- brm(rich.plot ~  seed.rich.m + (seed.rich.m | Experiment/site/block/fyr.trt),
+                 data = plot, cores = 4, chains = 4)
 
-# seedadd.biomass <- brm(l.biomass ~  seed.rich.m + (seed.rich.m | Experiment/site/block/fyr.trt),
-#                    data = plot, 
-#                    chains = 4, cores = 4)
+seedadd.biomass <- brm(l.biomass ~  seed.rich.m + (seed.rich.m | Experiment/site/block/fyr.trt),
+                   data = plot,
+                   chains = 4, cores = 4)
+
+setwd('~/Dropbox/Projects/SeedAdd/Model_fits/')
+save(seedadd.rich, file = './rich.Rdata')
+save(seedadd.biomass, file = './biomass.Rdata')
 
 
 # richness model summary

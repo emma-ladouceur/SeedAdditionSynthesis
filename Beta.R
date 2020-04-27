@@ -9,6 +9,8 @@
 rm(list=ls())
 detach("package:ggplot2", unload=TRUE)
 detach("package:plyr", unload=TRUE)
+
+
 library(tidyr)
 library(dplyr)
 library(betapart)
@@ -16,6 +18,7 @@ library(tibble)
 library(tidyverse)
 library(bayesplot)
 library(patchwork)
+library(ggplot2)
 
 
 
@@ -160,17 +163,26 @@ beta<-read.csv("./Data/beta.df.csv", header=TRUE) %>%
   as_tibble()
 
 beta$Experiment<-beta$Experiment_
+beta$fyr.trt<-as.factor(beta$yr.trt)
+beta$seed.rich<-as.numeric(as.character(beta$seed.rich))
+beta$site<-as.factor(beta$site)
+beta$block<-as.factor(beta$block)
+View(beta)
+
 
 # Load model objects
 load("./Model Fits/betat.Rdata") # object name: turnover.zoib
 load("./Model Fits/betan.Rdata") # object name: nested.zib
 
 
-# turnover.zoib <- brm(jtu ~  seed.rich + (seed.rich | Experiment/site/block/fyr.trt), 
-#                          family=zero_one_inflated_beta(),
-#                          data = beta, 
-#                          inits = '0',
-#                          cores = 4, chains = 4)
+turnover.zoib <- brm(jtu ~  seed.rich + (seed.rich | Experiment/site/block/fyr.trt),
+                         family=zero_one_inflated_beta(),
+                         data = beta,
+                         inits = '0',
+                         cores = 4, chains = 4)
+
+setwd('~/Dropbox/Projects/SeedAdd/Model_fits/')
+save(turnover.zoib, file = './betat.Rdata')
 
 # Turnover model
 summary(turnover.zoib)
@@ -211,18 +223,20 @@ betat_exp_coef2 <-  bind_cols(betat_exp_coef$Experiment[,,'Intercept'] %>%
 
 # Nestedness model
 
-# nested.zib <- brm(jne ~  seed.rich + (seed.rich | Experiment/site/block/fyr.trt), 
-#                       family=zero_inflated_beta(),
-#                       data = beta,
-#                       inits = '0',
-#                       cores = 4, chains = 4)
+nested.zib <- brm(jne ~  seed.rich + (seed.rich | Experiment/site/block/fyr.trt),
+                      family=zero_inflated_beta(),
+                      data = beta,
+                      inits = '0',
+                      cores = 4, chains = 4)
 
+setwd('~/Dropbox/Projects/SeedAdd/Model_fits/')
+save(nested.zib, file = './betan.Rdata')
 
 summary(nested.zib)
 plot(nested.zib) 
 
 # Figure S1 e
-pp_check(nested.zib)
+pp_check(nested.zib)+ theme_classic()
 
 # residuals
 n1<-residuals(nested.zib)
