@@ -167,7 +167,12 @@ beta$fyr.trt<-as.factor(beta$yr.trt)
 beta$seed.rich<-as.numeric(as.character(beta$seed.rich))
 beta$site<-as.factor(beta$site)
 beta$block<-as.factor(beta$block)
-View(beta)
+beta<-beta %>%
+  drop_na() 
+
+nrow(beta)
+nrow(beta2)
+View(beta2)
 
 
 # Load model objects
@@ -263,6 +268,9 @@ betan_fixef <- fixef(nested.zib)
 
 betan_exp_coef <- coef(nested.zib)
 betan_exp_coef 
+
+betad<-beta%>%distinct(Experiment,seed.rich)
+View(betad)
 betan_exp_coef2 <-  bind_cols(betan_exp_coef$Experiment[,,'Intercept'] %>% 
                                 as_tibble() %>% 
                                 mutate(Intercept = Estimate,
@@ -300,14 +308,19 @@ betan_fixef_df<-as.data.frame((betan_fixef))
 betat_fixef_df$Model<-'Turnover'
 betan_fixef_df$Model<-'Nestedness'
 fixef.all<-bind_rows(betat_fixef_df,betan_fixef_df)
-
+fixef.all
 
 library(plyr)
-betat_exp_coef2$Study<-revalue(betat_exp_coef2$Experiment, c("ASGA_Michigan"="Michigan.us", "California_Invade"="California.I.us","CCR_04"="CedarCreek4.us","CCR_093"="CedarCreek93.us","Germany_Montane"="Montane.de","Halle"="Halle.de","Jena"="Jena.de","Jena2"="Jena2.de","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow.us","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field.us","Texas_Temple_Prarie"="Texas.Temple.Prairie.us"))
-betan_exp_coef2$Study<-revalue(betan_exp_coef2$Experiment, c("ASGA_Michigan"="Michigan.us", "California_Invade"="California.I.us","CCR_04"="CedarCreek4.us","CCR_093"="CedarCreek93.us","Germany_Montane"="Montane.de","Halle"="Halle.de","Jena"="Jena.de","Jena2"="Jena2.de","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow.us","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field.us","Texas_Temple_Prarie"="Texas.Temple.Prairie.us"))
+betat_exp_coef2$Study<-revalue(betat_exp_coef2$Experiment, c("ASGA_Michigan"="Michigan.us", "California_Invade"="California.I.us","California_Prop_Limi"="California.P.L.us","CCR_04"="CedarCreek4.us","CCR_093"="CedarCreek93.us","Germany_Montane"="Montane.de","Halle"="Halle.de","Jena"="Jena.de","Jena2"="Jena2.de","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow.us","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field.us","Texas_Temple_Prarie"="Texas.Temple.Prairie.us"))
+betan_exp_coef2$Study<-revalue(betan_exp_coef2$Experiment, c("ASGA_Michigan"="Michigan.us", "California_Invade"="California.I.us","California_Prop_Limi"="California.P.L.us","CCR_04"="CedarCreek4.us","CCR_093"="CedarCreek93.us","Germany_Montane"="Montane.de","Halle"="Halle.de","Jena"="Jena.de","Jena2"="Jena2.de","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow.us","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field.us","Texas_Temple_Prarie"="Texas.Temple.Prairie.us"))
 
 betat_exp_coef2$Study<-factor(as.character(betat_exp_coef2$Study))
 betan_exp_coef2$Study<-factor(as.character(betan_exp_coef2$Study))
+
+betat_fitted$Study<-revalue(betat_fitted$Experiment, c("ASGA_Michigan"="Michigan.us", "California_Invade"="California.I.us","California_Prop_Limi"="California.P.L.us","CCR_04"="CedarCreek4.us","CCR_093"="CedarCreek93.us","Germany_Montane"="Montane.de","Halle"="Halle.de","Jena"="Jena.de","Jena2"="Jena2.de","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow.us","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field.us","Texas_Temple_Prarie"="Texas.Temple.Prairie.us"))
+betat_fitted$Study<-factor(as.character(betat_fitted$Study))
+betan_fitted$Study<-revalue(betan_fitted$Experiment, c("ASGA_Michigan"="Michigan.us", "California_Invade"="California.I.us","California_Prop_Limi"="California.P.L.us","CCR_04"="CedarCreek4.us","CCR_093"="CedarCreek93.us","Germany_Montane"="Montane.de","Halle"="Halle.de","Jena"="Jena.de","Jena2"="Jena2.de","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow.us","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field.us","Texas_Temple_Prarie"="Texas.Temple.Prairie.us"))
+betan_fitted$Study<-factor(as.character(betan_fitted$Study))
 
 
 tc<-ggplot() + 
@@ -323,7 +336,7 @@ tc<-ggplot() +
                 ymin = Q2.5[2], ymax = Q97.5[2]),
             alpha = 0.3) +
   labs(x = 'Study',
-       y = 'Turnover / species of seed added', subtitle= "a) Turnover") +
+       y = 'Turnover / species of seed added', subtitle= "b) ") +
   scale_colour_manual(values = c( "#EE0011FF" , "#EC579AFF", "#15983DFF", "#149BEDFF", "#0C5BB0FF", "#8F2F8BFF", "#F9B90AFF", "#16A08CFF" ,"#6A7F93FF","#FA6B09FF","#A1C720FF","#9A703EFF" ))+
   scale_x_discrete(limits = rev(levels(betat_exp_coef2$Study)))+
   coord_flip() + 
@@ -345,12 +358,97 @@ nc<-ggplot() +
                 ymin = Q2.5[2], ymax = Q97.5[2]),
             alpha = 0.3) +
   labs(x = 'Study',
-       y = 'Nestedness / species of seed added', subtitle = "b) Nestedness") +
+       y = 'Nestedness / species of seed added', subtitle = "d) ") +
   scale_colour_manual(values = c( "#EE0011FF" , "#EC579AFF", "#15983DFF", "#149BEDFF", "#0C5BB0FF", "#8F2F8BFF", "#F9B90AFF", "#16A08CFF" ,"#6A7F93FF","#FA6B09FF","#A1C720FF","#9A703EFF" ))+
   scale_x_discrete(limits = rev(levels(betan_exp_coef2$Study)))+coord_flip() + 
-  theme_bw()+theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), strip.background = element_rect(colour="black", fill="white"),legend.position="bottom",axis.title.y=element_blank(),
+  theme_bw()+theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), strip.background = element_rect(colour="black", fill="white"),legend.position="bottom",#axis.title.y=element_blank(),
                    axis.text.y=element_blank(),
                    axis.ticks.y=element_blank())
+
+nc
+colnames(betat_fitted)
+
+betat_exp_coef2
+betat.line<-betat_exp_coef2 %>% filter(xmin < xmax)
+betat.point<-betat_exp_coef2 %>% filter(xmin==xmax)
+
+betan.line<-betan_exp_coef2 %>% filter(xmin < xmax)
+betan.point<-betan_exp_coef2 %>% filter(xmin==xmax)
+
+#"#EE0011FF" , "#EC579AFF", "#15983DFF", "#149BEDFF", "#0C5BB0FF", "#8F2F8BFF","#F9B90AFF" , "#16A08CFF" ,"#6A7F93FF","#FA6B09FF","#A1C720FF","#9A703EFF"
+
+color_line <- c("#EC579AFF", "#149BEDFF","#8F2F8BFF")
+color_point <- c("#FA6B09FF","#EE0011FF" , "#15983DFF","#A1C720FF","#0C5BB0FF","#F9B90AFF", "#16A08CFF" ,"#6A7F93FF","#9A703EFF" )
+
+
+betat.point
+
+btr <- ggplot() +
+  geom_point(data = betat_fitted,
+             aes(x = seed.rich, y = jtu,
+                 colour = Study), #alpha=0.4,
+             size = 1.2, position = position_jitter(width = 0.95, height = 0.95)) +
+  geom_segment(data = betat.line,
+               aes(x = xmin,
+                   xend = xmax,
+                   y = (Intercept + Slope * xmin),
+                   yend = (Intercept + Slope * xmax) ),
+                   #group = Study,
+                   colour = color_line,
+               size = 1.2) +
+  geom_point(data = betat.point,
+             aes(x = xmax, y = Intercept + Slope,
+                 ), fill= color_point,shape=21, size=3.5,stroke=1,
+             color="black") +
+  geom_ribbon(data = betat_fitted,
+              aes(x = seed.rich, ymin = Q2.5, ymax = Q97.5),
+              alpha = 0.3) +
+  geom_line(data = betat_fitted,
+            aes(x = seed.rich, y = Estimate),
+            size = 1.5) +
+  labs(x = 'Number of species of seed added',
+       y = 'Turnover', title= 'Turnover', subtitle="a)") +
+  scale_colour_manual(values = c( "#EE0011FF" , "#EC579AFF", "#15983DFF", "#149BEDFF", "#0C5BB0FF", "#8F2F8BFF","#F9B90AFF" , "#16A08CFF" ,"#6A7F93FF","#FA6B09FF","#A1C720FF","#9A703EFF" ))+
+  theme_bw() + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), strip.background = element_rect(colour="black", fill="white"),
+                     legend.position="bottom")
+btr
+
+summary(turnover.zoib)
+summary(nested.zib)
+
+View(betat_exp_coef2)
+
+bnr <- ggplot() +
+  geom_point(data = betan_fitted,
+             aes(x = seed.rich, y = jne,
+                 colour = Study),
+             size = 1.2, position = position_jitter(width = 0.95, height = 0.95)) +
+  geom_segment(data = betan.line,
+               aes(x = xmin,
+                   xend = xmax,
+                   y = (Intercept + Slope * xmin),
+                   yend = (Intercept + Slope * xmax) ),
+               #group = Study,
+               colour = color_line,
+               size = 1.2) +
+  geom_point(data = betan.point,
+             aes(x = xmax, y = Intercept + Slope,
+             ), fill= color_point,shape=21, size=3.5,stroke=1,
+             color="black") +
+  geom_ribbon(data = betan_fitted,
+              aes(x = seed.rich, ymin = Q2.5, ymax = Q97.5),
+              alpha = 0.3) +
+  geom_line(data = betan_fitted,
+            aes(x = seed.rich, y = Estimate),
+            size = 1.5) +
+  labs(x = 'Number of species of seed added',
+       y = 'Nestedness', title= ' Nestedness', subtitle="c)") +
+  scale_colour_manual(values = c( "#EE0011FF" , "#EC579AFF", "#15983DFF", "#149BEDFF", "#0C5BB0FF", "#8F2F8BFF","#F9B90AFF" , "#16A08CFF" ,"#6A7F93FF","#FA6B09FF","#A1C720FF","#9A703EFF" ))+
+  theme_bw() + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), strip.background = element_rect(colour="black", fill="white"),
+                     legend.position="bottom")
+bnr
+
+
 
 #extract legend
 #https://github.com/hadley/ggplot2/wiki/Share-a-legend-between-two-ggplot2-graphs
@@ -360,8 +458,11 @@ g_legend<-function(a.gplot){
   legend <- tmp$grobs[[leg]]
   return(legend)}
 
-b.legend<-g_legend(tc)
+b.legend<-g_legend(nc)
 
 
-(tc+ theme(legend.position="none") | nc+ theme(legend.position="none"))/(b.legend)  +
-  plot_layout(heights = c(10,1))
+( btr+ theme(legend.position="none") | tc+ theme(legend.position="none")  ) / (bnr+ theme(legend.position="none")| nc+ theme(legend.position="none") ) /(b.legend)  +
+  plot_layout(heights = c(10,10,2))
+
+
+
