@@ -336,7 +336,7 @@ tc<-ggplot() +
                 ymin = Q2.5[2], ymax = Q97.5[2]),
             alpha = 0.3) +
   labs(x = 'Study',
-       y = 'Turnover / species of seed added', subtitle= "b) ") +
+       y = 'Change in Turnover / species of seed added', subtitle= "b) ") +
   scale_colour_manual(values = c( "#EE0011FF" , "#EC579AFF", "#15983DFF", "#149BEDFF", "#0C5BB0FF", "#8F2F8BFF", "#F9B90AFF", "#16A08CFF" ,"#6A7F93FF","#FA6B09FF","#A1C720FF","#9A703EFF" ))+
   scale_x_discrete(limits = rev(levels(betat_exp_coef2$Study)))+
   coord_flip() + 
@@ -358,7 +358,7 @@ nc<-ggplot() +
                 ymin = Q2.5[2], ymax = Q97.5[2]),
             alpha = 0.3) +
   labs(x = 'Study',
-       y = 'Nestedness / species of seed added', subtitle = "d) ") +
+       y = 'Change in Nestedness / species of seed added', subtitle = "d) ") +
   scale_colour_manual(values = c( "#EE0011FF" , "#EC579AFF", "#15983DFF", "#149BEDFF", "#0C5BB0FF", "#8F2F8BFF", "#F9B90AFF", "#16A08CFF" ,"#6A7F93FF","#FA6B09FF","#A1C720FF","#9A703EFF" ))+
   scale_x_discrete(limits = rev(levels(betan_exp_coef2$Study)))+coord_flip() + 
   theme_bw()+theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), strip.background = element_rect(colour="black", fill="white"),legend.position="bottom",#axis.title.y=element_blank(),
