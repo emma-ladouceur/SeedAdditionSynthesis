@@ -450,17 +450,17 @@ bnr
 
 
 
-#extract legend
-#https://github.com/hadley/ggplot2/wiki/Share-a-legend-between-two-ggplot2-graphs
+# extract legend
+# https://github.com/hadley/ggplot2/wiki/Share-a-legend-between-two-ggplot2-graphs
 g_legend<-function(a.gplot){
   tmp <- ggplot_gtable(ggplot_build(a.gplot))
   leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box")
   legend <- tmp$grobs[[leg]]
   return(legend)}
-
+# make legend an object
 b.legend<-g_legend(nc)
 
-
+# use patchwork to arrange figures with single legend
 ( btr+ theme(legend.position="none") | tc+ theme(legend.position="none")  ) / (bnr+ theme(legend.position="none")| nc+ theme(legend.position="none") ) /(b.legend)  +
   plot_layout(heights = c(10,10,2))
 
