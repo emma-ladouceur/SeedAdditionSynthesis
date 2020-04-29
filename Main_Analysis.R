@@ -194,7 +194,7 @@ biomass_fixef_df$Model<-'Biomass'
 fixef.all<-bind_rows(S_seed_fixef_df,biomass_fixef_df)
 fixef.all
 
-ra<-ggplot() + 
+rb<-ggplot() + 
   geom_point(data = S_seed_exp_coef2, aes(x = Study, y = Slope,colour = Study),size = 2) +
   geom_errorbar(data = S_seed_exp_coef2, aes(x = Study,ymin = Slope_lower,
                                              ymax = Slope_upper,colour = Study),
@@ -207,8 +207,8 @@ ra<-ggplot() +
                 ymin = Q2.5[2], ymax = Q97.5[2]),
             alpha = 0.3) +
   labs(x = 'Study',
-       y = 'Species Richness / species of seed added', title= "Species Richness",
-       subtitle="a)") +
+       y = 'Species Richness / species of seed added', title= "",
+       subtitle="b)") +
   scale_colour_manual(values = c( "#EE0011FF" , "#EC579AFF", "#15983DFF", "#149BEDFF", "#0C5BB0FF", "#8F2F8BFF", "#F9B90AFF", "#16A08CFF" ,"#6A7F93FF","#FA6B09FF","#A1C720FF","#9A703EFF" ))+
   scale_x_discrete(limits = rev(levels(S_seed_exp_coef2$Study)))+coord_flip() + 
   theme_bw()+theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), strip.background = element_rect(colour="black", fill="white"),legend.position="none",
@@ -217,7 +217,7 @@ ra<-ggplot() +
                    axis.ticks.y=element_blank())
 
 
-bc<-ggplot() + 
+bb<-ggplot() + 
   geom_point(data = biomass_exp_coef2, aes(x = Study, y = Slope,colour = Study),size = 2) +
   geom_errorbar(data = biomass_exp_coef2, aes(x = Study,ymin = Slope_lower,
                                               ymax = Slope_upper,colour = Study),
@@ -230,8 +230,8 @@ bc<-ggplot() +
                 ymin = Q2.5[2], ymax = Q97.5[2]),
             alpha = 0.3) +
   labs(x = 'Study',
-       y = expression(paste( 'Biomass [log(g/',m^2,')] / species of seed added')), title = 'Biomass',
-       subtitle= "a)") +
+       y = expression(paste( 'Biomass [log(g/',m^2,')] / species of seed added')), title = '',
+       subtitle= "b)") +
   scale_colour_manual(values = c( "#EE0011FF" , "#EC579AFF", "#15983DFF", "#149BEDFF", "#0C5BB0FF", "#8F2F8BFF", "#F9B90AFF", "#16A08CFF" ,"#6A7F93FF","#FA6B09FF","#A1C720FF","#9A703EFF" ))+
   scale_x_discrete(limits = rev(levels(biomass_exp_coef2$Study)))+coord_flip() + 
   theme_bw()+theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), strip.background = element_rect(colour="black", fill="white"),legend.position="none",
@@ -240,11 +240,11 @@ bc<-ggplot() +
                    axis.ticks.y=element_blank())
 
 # Figure 1
-grid_arrange_shared_legend(rc,bc,nrow=1)
+
 
 # Figure 2 a) Richness
 
-rb<-ggplot() +
+ra<-ggplot() +
   geom_point(data = S_seed_fitted,
              aes(x = seed.rich, y = rich.plot,
                  colour = Study),
@@ -267,7 +267,7 @@ rb<-ggplot() +
             size = 1.5) +
   #scale_y_continuous(trans = 'log', breaks = c(2,4,8,16.24,36,48,64)) +
   labs(x = 'Number of species of seed added ',
-       y = 'Species richness', title= '', subtitle= "b)") +
+       y = 'Species richness', title= 'Species Richness', subtitle= "a)") +
   scale_colour_manual(values = c( "#EE0011FF" , "#EC579AFF", "#15983DFF", "#149BEDFF", "#0C5BB0FF", "#8F2F8BFF", "#F9B90AFF", "#16A08CFF" ,"#6A7F93FF","#FA6B09FF","#A1C720FF","#9A703EFF" ))+
   theme_bw() + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), strip.background = element_rect(colour="black", fill="white"),
                                                                                                                              legend.position="bottom")
@@ -275,7 +275,7 @@ rb<-ggplot() +
 
 # Figure 2 b) Biomass
 
-bd<-ggplot() +
+ba<-ggplot() +
   geom_point(data = biomass_fitted,
              aes(x = seed.rich, y = biomass.plot,
                  colour = Study),
@@ -299,7 +299,7 @@ bd<-ggplot() +
             size = 1.5) +
   scale_y_continuous(trans = 'log', breaks = c(8, 64, 512, 1024, 2048)) +
   labs(x = 'Number of species of seed added ',
-       y = expression(paste('Biomass [log(g/',m^2, ')]')), title='', subtitle="b)") +
+       y = expression(paste('Biomass [log(g/',m^2, ')]')), title='Biomass', subtitle="a)") +
   scale_colour_manual(values = c( "#EE0011FF" , "#EC579AFF", "#15983DFF", "#149BEDFF", "#0C5BB0FF", "#8F2F8BFF", "#F9B90AFF", "#16A08CFF" ,"#6A7F93FF","#FA6B09FF","#A1C720FF","#9A703EFF" ))+
   theme_bw() + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), strip.background = element_rect(colour="black", fill="white"),
                      legend.position="bottom")
@@ -312,16 +312,16 @@ g_legend<-function(a.gplot){
   legend <- tmp$grobs[[leg]]
   return(legend)}
 
-m.legend<-g_legend(bd)
+m.legend<-g_legend(ba)
 
 (ra | rb)/(bc | bd+ theme(legend.position="none"))/(m.legend)  +
   plot_layout(heights = c(10,10,2.5))
 
 
-(ra | rb+ theme(legend.position="none"))/(m.legend)  +
+(ra+ theme(legend.position="none") | rb)/(m.legend)  +
   plot_layout(heights = c(10,1))
 
-(bc | bd+ theme(legend.position="none"))/(m.legend)  +
+(ba+ theme(legend.position="none") | bb)/(m.legend)  +
   plot_layout(heights = c(10,1))
 
 

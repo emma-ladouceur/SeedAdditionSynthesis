@@ -200,7 +200,7 @@ dr <- ggplot() +
             aes(x = seed.rich, y = Estimate),
             size = 1.5) +
   labs(x = 'Number of species of seed added',
-       y = expression(S[PIE]), title= '', subtitle="b)") +
+       y = expression(S[PIE]), title= ' Evenness', subtitle="a)") +
   scale_colour_manual(values = c( "#EE0011FF" , "#EC579AFF", "#15983DFF", "#149BEDFF", "#0C5BB0FF", "#8F2F8BFF","#F9B90AFF" , "#16A08CFF" ,"#6A7F93FF","#FA6B09FF","#A1C720FF","#9A703EFF" ))+
   theme_bw() + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), strip.background = element_rect(colour="black", fill="white"),
                                                                                                                              legend.position="bottom")
@@ -231,7 +231,7 @@ dc<-ggplot() +
                 ymin = Q2.5[2], ymax = Q97.5[2]),
             alpha = 0.3) +
   labs(x = 'Study',
-       y=expression(S[PIE] * "/ number of species of seed added") , title= ' Evenness ', subtitle= "a)") +
+       y=expression(S[PIE] * "/ number of species of seed added") , title= ' ', subtitle= "b)") +
   scale_colour_manual(values = c( "#EE0011FF" , "#EC579AFF", "#15983DFF", "#149BEDFF", "#0C5BB0FF", "#8F2F8BFF","#F9B90AFF", "#16A08CFF" ,"#6A7F93FF","#FA6B09FF","#A1C720FF","#9A703EFF" ))+
   scale_x_discrete(limits = rev(levels(pie_exp_coef3$Study)))+
   coord_flip() + 
@@ -252,7 +252,7 @@ g_legend<-function(a.gplot){
 d.legend<-g_legend(dr)
 
 
-(dc+ theme(legend.position="none") | dr+ theme(legend.position="none"))/(d.legend)  +
+(dr+ theme(legend.position="none") | dc+ theme(legend.position="none"))/(d.legend)  +
   plot_layout(heights = c(10,1))
 
 
