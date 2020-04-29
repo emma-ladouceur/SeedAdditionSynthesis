@@ -162,6 +162,10 @@ setwd('~/Dropbox/Projects/SeedAddDraft/')
 beta<-read.csv("./Data/beta.df.csv", header=TRUE) %>%
   as_tibble()
 
+# sb
+beta<-read.csv("~/Dropbox/SeedAdd/Data/beta.df.csv", header=TRUE) %>%
+  as_tibble()
+
 beta$Experiment<-beta$Experiment_
 beta$fyr.trt<-as.factor(beta$yr.trt)
 beta$seed.rich<-as.numeric(as.character(beta$seed.rich))
@@ -177,8 +181,9 @@ View(beta2)
 
 # Load model objects
 load("./Model Fits/betat.Rdata") # object name: turnover.zoib
+load("~/Dropbox/SeedAdd/Model_fits/betat.Rdata") # object name: turnover.zoib
 load("./Model Fits/betan.Rdata") # object name: nested.zib
-
+load("~/Dropbox/SeedAdd/Model_fits/betan.Rdata") # object name: nested.zib
 
 turnover.zoib <- brm(jtu ~  seed.rich + (seed.rich | Experiment/site/block/fyr.trt),
                          family=zero_one_inflated_beta(),
@@ -271,6 +276,7 @@ betan_exp_coef
 
 betad<-beta%>%distinct(Experiment,seed.rich)
 View(betad)
+# this gets us the coefficients for the varying intercepts and slopes
 betan_exp_coef2 <-  bind_cols(betan_exp_coef$Experiment[,,'Intercept'] %>% 
                                 as_tibble() %>% 
                                 mutate(Intercept = Estimate,
@@ -377,28 +383,31 @@ betan.point<-betan_exp_coef2 %>% filter(xmin==xmax)
 
 #"#EE0011FF" , "#EC579AFF", "#15983DFF", "#149BEDFF", "#0C5BB0FF", "#8F2F8BFF","#F9B90AFF" , "#16A08CFF" ,"#6A7F93FF","#FA6B09FF","#A1C720FF","#9A703EFF"
 
-color_line <- c("#EC579AFF", "#149BEDFF","#8F2F8BFF")
-color_point <- c("#FA6B09FF","#EE0011FF" , "#15983DFF","#A1C720FF","#0C5BB0FF","#F9B90AFF", "#16A08CFF" ,"#6A7F93FF","#9A703EFF" )
+# color_line <- c("#EC579AFF", "#149BEDFF","#8F2F8BFF")
+# color_point <- c("#FA6B09FF","#EE0011FF" , "#15983DFF","#A1C720FF","#0C5BB0FF","#F9B90AFF", "#16A08CFF" ,"#6A7F93FF","#9A703EFF" )
 
 
 betat.point
 
-btr <- ggplot() +
+btr <-
+ggplot() +
   geom_point(data = betat_fitted,
              aes(x = seed.rich, y = jtu,
                  colour = Study), #alpha=0.4,
-             size = 1.2, position = position_jitter(width = 0.95, height = 0.95)) +
+             size = 1, position = position_jitter(width = 0.1)) +
   geom_segment(data = betat.line,
                aes(x = xmin,
                    xend = xmax,
-                   y = (Intercept + Slope * xmin),
-                   yend = (Intercept + Slope * xmax) ),
+                   y = plogis(Intercept + Slope * xmin),
+                   yend = plogis(Intercept + Slope * xmax),
+                   colour = Study),
                    #group = Study,
-                   colour = color_line,
+                   # colour = color_line,
                size = 1.2) +
   geom_point(data = betat.point,
-             aes(x = xmax, y = Intercept + Slope,
-                 ), fill= color_point,shape=21, size=3.5,stroke=1,
+             aes(x = xmax, y = plogis(Intercept + Slope),
+                 colour = Study, fill = Study,
+                 ), shape=21, size=3.5,stroke=1,
              color="black") +
   geom_ribbon(data = betat_fitted,
               aes(x = seed.rich, ymin = Q2.5, ymax = Q97.5),
@@ -422,18 +431,19 @@ bnr <- ggplot() +
   geom_point(data = betan_fitted,
              aes(x = seed.rich, y = jne,
                  colour = Study),
-             size = 1.2, position = position_jitter(width = 0.95, height = 0.95)) +
+             size = 1.2, position = position_jitter(width = 0.1)) +
   geom_segment(data = betan.line,
                aes(x = xmin,
                    xend = xmax,
-                   y = (Intercept + Slope * xmin),
-                   yend = (Intercept + Slope * xmax) ),
+                   y = plogis(Intercept + Slope * xmin),
+                   yend = plogis(Intercept + Slope * xmax),
+                   colour = Study),
                #group = Study,
-               colour = color_line,
+               # colour = color_line,
                size = 1.2) +
   geom_point(data = betan.point,
-             aes(x = xmax, y = Intercept + Slope,
-             ), fill= color_point,shape=21, size=3.5,stroke=1,
+             aes(x = xmax, y = plogis(Intercept + Slope),
+                 colour = Study, fill= Study), shape=21, size=3.5,stroke=1,
              color="black") +
   geom_ribbon(data = betan_fitted,
               aes(x = seed.rich, ymin = Q2.5, ymax = Q97.5),
