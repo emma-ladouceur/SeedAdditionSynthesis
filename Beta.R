@@ -185,14 +185,14 @@ load("~/Dropbox/SeedAdd/Model_fits/betat.Rdata") # object name: turnover.zoib
 load("./Model Fits/betan.Rdata") # object name: nested.zib
 load("~/Dropbox/SeedAdd/Model_fits/betan.Rdata") # object name: nested.zib
 
-turnover.zoib <- brm(jtu ~  seed.rich + (seed.rich | Experiment/site/block/fyr.trt),
-                         family=zero_one_inflated_beta(),
-                         data = beta,
-                         inits = '0',
-                         cores = 4, chains = 4)
-
-setwd('~/Dropbox/Projects/SeedAdd/Model_fits/')
-save(turnover.zoib, file = './betat.Rdata')
+# turnover.zoib <- brm(jtu ~  seed.rich + (seed.rich | Experiment/site/block/fyr.trt),
+#                          family=zero_one_inflated_beta(),
+#                          data = beta,
+#                          inits = '0',
+#                          cores = 4, chains = 4)
+# 
+# setwd('~/Dropbox/Projects/SeedAdd/Model_fits/')
+# save(turnover.zoib, file = './betat.Rdata')
 
 # Turnover model
 summary(turnover.zoib)
@@ -233,14 +233,14 @@ betat_exp_coef2 <-  bind_cols(betat_exp_coef$Experiment[,,'Intercept'] %>%
 
 # Nestedness model
 
-nested.zib <- brm(jne ~  seed.rich + (seed.rich | Experiment/site/block/fyr.trt),
-                      family=zero_inflated_beta(),
-                      data = beta,
-                      inits = '0',
-                      cores = 4, chains = 4)
-
-setwd('~/Dropbox/Projects/SeedAdd/Model_fits/')
-save(nested.zib, file = './betan.Rdata')
+# nested.zib <- brm(jne ~  seed.rich + (seed.rich | Experiment/site/block/fyr.trt),
+#                       family=zero_inflated_beta(),
+#                       data = beta,
+#                       inits = '0',
+#                       cores = 4, chains = 4)
+# 
+# setwd('~/Dropbox/Projects/SeedAdd/Model_fits/')
+# save(nested.zib, file = './betan.Rdata')
 
 summary(nested.zib)
 plot(nested.zib) 
@@ -317,22 +317,22 @@ fixef.all<-bind_rows(betat_fixef_df,betan_fixef_df)
 fixef.all
 
 library(plyr)
-betat_exp_coef2$Study<-revalue(betat_exp_coef2$Experiment, c("ASGA_Michigan"="Michigan.us", "California_Invade"="California.I.us","California_Prop_Limi"="California.P.L.us","CCR_04"="CedarCreek4.us","CCR_093"="CedarCreek93.us","Germany_Montane"="Montane.de","Halle"="Halle.de","Jena"="Jena.de","Jena2"="Jena2.de","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow.us","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field.us","Texas_Temple_Prarie"="Texas.Temple.Prairie.us"))
-betan_exp_coef2$Study<-revalue(betan_exp_coef2$Experiment, c("ASGA_Michigan"="Michigan.us", "California_Invade"="California.I.us","California_Prop_Limi"="California.P.L.us","CCR_04"="CedarCreek4.us","CCR_093"="CedarCreek93.us","Germany_Montane"="Montane.de","Halle"="Halle.de","Jena"="Jena.de","Jena2"="Jena2.de","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow.us","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field.us","Texas_Temple_Prarie"="Texas.Temple.Prairie.us"))
+betat_exp_coef2$Experiment<-revalue(betat_exp_coef2$Experiment, c("ASGA_Michigan"="Michigan", "California_Invade"="California.1","California_Prop_Limi"="California.2","CCR_04"="Cedar.Creek.4","CCR_093"="Cedar.Creek.93","Germany_Montane"="Montane","Halle"="Halle","Jena"="Jena","Jena2"="Jena.2","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field","Texas_Temple_Prarie"="Texas.Temple.Prairie"))
+betan_exp_coef2$Experiment<-revalue(betan_exp_coef2$Experiment, c("ASGA_Michigan"="Michigan", "California_Invade"="California.1","California_Prop_Limi"="California.2","CCR_04"="Cedar.Creek.4","CCR_093"="Cedar.Creek.93","Germany_Montane"="Montane","Halle"="Halle","Jena"="Jena","Jena2"="Jena.2","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field","Texas_Temple_Prarie"="Texas.Temple.Prairie"))
 
-betat_exp_coef2$Study<-factor(as.character(betat_exp_coef2$Study))
-betan_exp_coef2$Study<-factor(as.character(betan_exp_coef2$Study))
+betat_exp_coef2$Experiment<-factor(as.character(betat_exp_coef2$Experiment))
+betan_exp_coef2$Experiment<-factor(as.character(betan_exp_coef2$Experiment))
 
-betat_fitted$Study<-revalue(betat_fitted$Experiment, c("ASGA_Michigan"="Michigan.us", "California_Invade"="California.I.us","California_Prop_Limi"="California.P.L.us","CCR_04"="CedarCreek4.us","CCR_093"="CedarCreek93.us","Germany_Montane"="Montane.de","Halle"="Halle.de","Jena"="Jena.de","Jena2"="Jena2.de","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow.us","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field.us","Texas_Temple_Prarie"="Texas.Temple.Prairie.us"))
-betat_fitted$Study<-factor(as.character(betat_fitted$Study))
-betan_fitted$Study<-revalue(betan_fitted$Experiment, c("ASGA_Michigan"="Michigan.us", "California_Invade"="California.I.us","California_Prop_Limi"="California.P.L.us","CCR_04"="CedarCreek4.us","CCR_093"="CedarCreek93.us","Germany_Montane"="Montane.de","Halle"="Halle.de","Jena"="Jena.de","Jena2"="Jena2.de","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow.us","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field.us","Texas_Temple_Prarie"="Texas.Temple.Prairie.us"))
-betan_fitted$Study<-factor(as.character(betan_fitted$Study))
+betat_fitted$Experiment<-revalue(betat_fitted$Experiment, c("ASGA_Michigan"="Michigan", "California_Invade"="California.1","California_Prop_Limi"="California.2","CCR_04"="Cedar.Creek.4","CCR_093"="Cedar.Creek.93","Germany_Montane"="Montane","Halle"="Halle","Jena"="Jena","Jena2"="Jena.2","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field","Texas_Temple_Prarie"="Texas.Temple.Prairie"))
+betat_fitted$Experiment<-factor(as.character(betat_fitted$Experiment))
+betan_fitted$Experiment<-revalue(betan_fitted$Experiment, c("ASGA_Michigan"="Michigan", "California_Invade"="California.1","California_Prop_Limi"="California.2","CCR_04"="Cedar.Creek.4","CCR_093"="Cedar.Creek.93","Germany_Montane"="Montane","Halle"="Halle","Jena"="Jena","Jena2"="Jena.2","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field","Texas_Temple_Prarie"="Texas.Temple.Prairie"))
+betan_fitted$Experiment<-factor(as.character(betan_fitted$Experiment))
 
 
 tc<-ggplot() + 
-  geom_point(data = betat_exp_coef2, aes(x = Study, y = Slope,colour = Study),size = 2) +
-  geom_errorbar(data = betat_exp_coef2, aes(x = Study,ymin = Slope_lower,
-                                            ymax = Slope_upper,colour = Study),
+  geom_point(data = betat_exp_coef2, aes(x = Experiment, y = Slope,colour = Experiment),size = 2) +
+  geom_errorbar(data = betat_exp_coef2, aes(x = Experiment,ymin = Slope_lower,
+                                            ymax = Slope_upper,colour = Experiment),
                 width = 0, size = 1) + 
   geom_hline(yintercept = 0, lty = 2) +
   geom_hline(data = filter(fixef.all, Model=='Turnover'),
@@ -341,10 +341,10 @@ tc<-ggplot() +
             aes(xmin = -Inf, xmax = Inf,
                 ymin = Q2.5[2], ymax = Q97.5[2]),
             alpha = 0.3) +
-  labs(x = 'Study',
+  labs(x = 'Experiment',
        y = 'Change in Turnover / species of seed added', subtitle= "b) ") +
   scale_colour_manual(values = c( "#EE0011FF" , "#EC579AFF", "#15983DFF", "#149BEDFF", "#0C5BB0FF", "#8F2F8BFF", "#F9B90AFF", "#16A08CFF" ,"#6A7F93FF","#FA6B09FF","#A1C720FF","#9A703EFF" ))+
-  scale_x_discrete(limits = rev(levels(betat_exp_coef2$Study)))+
+  scale_x_discrete(limits = rev(levels(betat_exp_coef2$Experiment)))+
   coord_flip() + 
   theme_bw()+theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), strip.background = element_rect(colour="black", fill="white"),legend.position="bottom",axis.title.y=element_blank(),
                    axis.text.y=element_blank(),
@@ -352,9 +352,9 @@ tc<-ggplot() +
 
 
 nc<-ggplot() + 
-  geom_point(data = betan_exp_coef2, aes(x = Study, y = Slope,colour = Study),size = 2) +
-  geom_errorbar(data = betan_exp_coef2, aes(x = Study,ymin = Slope_lower,
-                                            ymax = Slope_upper,colour = Study),
+  geom_point(data = betan_exp_coef2, aes(x = Experiment, y = Slope,colour = Experiment),size = 2) +
+  geom_errorbar(data = betan_exp_coef2, aes(x = Experiment,ymin = Slope_lower,
+                                            ymax = Slope_upper,colour = Experiment),
                 width = 0, size = 1) +
   geom_hline(yintercept = 0, lty = 2) +
   geom_hline(data = filter(fixef.all, Model=='Nestedness'),
@@ -363,10 +363,10 @@ nc<-ggplot() +
             aes(xmin = -Inf, xmax = Inf,
                 ymin = Q2.5[2], ymax = Q97.5[2]),
             alpha = 0.3) +
-  labs(x = 'Study',
+  labs(x = 'Experiment',
        y = 'Change in Nestedness / species of seed added', subtitle = "d) ") +
   scale_colour_manual(values = c( "#EE0011FF" , "#EC579AFF", "#15983DFF", "#149BEDFF", "#0C5BB0FF", "#8F2F8BFF", "#F9B90AFF", "#16A08CFF" ,"#6A7F93FF","#FA6B09FF","#A1C720FF","#9A703EFF" ))+
-  scale_x_discrete(limits = rev(levels(betan_exp_coef2$Study)))+coord_flip() + 
+  scale_x_discrete(limits = rev(levels(betan_exp_coef2$Experiment)))+coord_flip() + 
   theme_bw()+theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), strip.background = element_rect(colour="black", fill="white"),legend.position="bottom",#axis.title.y=element_blank(),
                    axis.text.y=element_blank(),
                    axis.ticks.y=element_blank())
@@ -383,8 +383,8 @@ betan.point<-betan_exp_coef2 %>% filter(xmin==xmax)
 
 #"#EE0011FF" , "#EC579AFF", "#15983DFF", "#149BEDFF", "#0C5BB0FF", "#8F2F8BFF","#F9B90AFF" , "#16A08CFF" ,"#6A7F93FF","#FA6B09FF","#A1C720FF","#9A703EFF"
 
-# color_line <- c("#EC579AFF", "#149BEDFF","#8F2F8BFF")
-# color_point <- c("#FA6B09FF","#EE0011FF" , "#15983DFF","#A1C720FF","#0C5BB0FF","#F9B90AFF", "#16A08CFF" ,"#6A7F93FF","#9A703EFF" )
+color_line <- c("#EC579AFF", "#149BEDFF","#8F2F8BFF")
+ color_point <- c("#FA6B09FF","#EE0011FF" , "#15983DFF","#A1C720FF","#0C5BB0FF","#F9B90AFF", "#16A08CFF" ,"#6A7F93FF","#9A703EFF" )
 
 
 betat.point
@@ -393,21 +393,20 @@ btr <-
 ggplot() +
   geom_point(data = betat_fitted,
              aes(x = seed.rich, y = jtu,
-                 colour = Study), #alpha=0.4,
+                 colour = Experiment), #alpha=0.4,
              size = 1, position = position_jitter(width = 0.1)) +
   geom_segment(data = betat.line,
                aes(x = xmin,
                    xend = xmax,
                    y = plogis(Intercept + Slope * xmin),
                    yend = plogis(Intercept + Slope * xmax),
-                   colour = Study),
-                   #group = Study,
-                   # colour = color_line,
+                   colour = Experiment),
+                   #group = Experiment,
+                    colour = color_line,
                size = 1.2) +
   geom_point(data = betat.point,
-             aes(x = xmax, y = plogis(Intercept + Slope),
-                 colour = Study, fill = Study,
-                 ), shape=21, size=3.5,stroke=1,
+             aes(x = xmax, y = plogis(Intercept + Slope)), 
+             fill=color_point,shape=21, size=3.5,stroke=1,
              color="black") +
   geom_ribbon(data = betat_fitted,
               aes(x = seed.rich, ymin = Q2.5, ymax = Q97.5),
@@ -430,20 +429,19 @@ View(betat_exp_coef2)
 bnr <- ggplot() +
   geom_point(data = betan_fitted,
              aes(x = seed.rich, y = jne,
-                 colour = Study),
+                 colour = Experiment),
              size = 1.2, position = position_jitter(width = 0.1)) +
   geom_segment(data = betan.line,
                aes(x = xmin,
                    xend = xmax,
                    y = plogis(Intercept + Slope * xmin),
-                   yend = plogis(Intercept + Slope * xmax),
-                   colour = Study),
-               #group = Study,
-               # colour = color_line,
+                   yend = plogis(Intercept + Slope * xmax)),
+               #group = Experiment,
+               colour = color_line,
                size = 1.2) +
   geom_point(data = betan.point,
-             aes(x = xmax, y = plogis(Intercept + Slope),
-                 colour = Study, fill= Study), shape=21, size=3.5,stroke=1,
+             aes(x = xmax, y = plogis(Intercept + Slope)), 
+             fill=color_point,shape=21, size=3.5,stroke=1,
              color="black") +
   geom_ribbon(data = betan_fitted,
               aes(x = seed.rich, ymin = Q2.5, ymax = Q97.5),
@@ -472,7 +470,7 @@ b.legend<-g_legend(nc)
 
 # use patchwork to arrange figures with single legend
 ( btr+ theme(legend.position="none") | tc+ theme(legend.position="none")  ) / (bnr+ theme(legend.position="none")| nc+ theme(legend.position="none") ) /(b.legend)  +
-  plot_layout(heights = c(10,10,2))
+  plot_layout(heights = c(10,10,2.3))
 
 
 

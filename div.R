@@ -97,11 +97,11 @@ hist(seed.pie.d$l.b.pie)
 # load model object
 load("./Model Fits/seed.pie.Rdata") # object name: m.seed.pie
 
-seed.pie <- brm(biomass.pie ~  seed.rich.m + (seed.rich.m | Experiment/site/block/fyr.trt),
-                     data = seed.pie, cores = 4, chains = 4)
-
-setwd('~/Dropbox/Projects/SeedAdd/Model_fits/')
-save(seed.pie, file = './seed.pie.Rdata')
+# seed.pie <- brm(biomass.pie ~  seed.rich.m + (seed.rich.m | Experiment/site/block/fyr.trt),
+#                      data = seed.pie, cores = 4, chains = 4)
+# 
+# setwd('~/Dropbox/Projects/SeedAdd/Model_fits/')
+# save(seed.pie, file = './seed.pie.Rdata')
 
 summary(seed.pie)
 
@@ -171,11 +171,11 @@ pie_exp_coef3 <- pie_exp_coef2 %>%
 
 library(plyr)
 pie_fitted$Experiment<-as.factor(as.character(pie_fitted$Experiment))
-pie_fitted$Study<-revalue(pie_fitted$Experiment, c("ASGA_Michigan"="Michigan.us", "California_Invade"="California.I.us","California_Prop_Limi"="California.P.L.us","CCR_04"="CedarCreek4.us","CCR_093"="CedarCreek93.us","Germany_Montane"="Montane.de","Halle"="Halle.de","Jena"="Jena.de","Jena2"="Jena2.de","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow.us","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field.us","Texas_Temple_Prarie"="Texas.Temple.Prairie.us"))
-pie_exp_coef3$Study<-revalue(pie_exp_coef3$Experiment, c("ASGA_Michigan"="Michigan.us", "California_Invade"="California.I.us","California_Prop_Limi"="California.P.L.us","CCR_04"="CedarCreek4.us","CCR_093"="CedarCreek93.us","Germany_Montane"="Montane.de","Halle"="Halle.de","Jena"="Jena.de","Jena2"="Jena2.de","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow.us","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field.us","Texas_Temple_Prarie"="Texas.Temple.Prairie.us"))
+pie_fitted$Experiment<-revalue(pie_fitted$Experiment, c("ASGA_Michigan"="Michigan", "California_Invade"="California.1","California_Prop_Limi"="California.2","CCR_04"="Cedar.Creek.4","CCR_093"="Cedar.Creek.93","Germany_Montane"="Montane","Halle"="Halle","Jena"="Jena","Jena2"="Jena.2","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field","Texas_Temple_Prarie"="Texas.Temple.Prairie"))
+pie_exp_coef3$Experiment<-revalue(pie_exp_coef3$Experiment, c("ASGA_Michigan"="Michigan", "California_Invade"="California.1","California_Prop_Limi"="California.2","CCR_04"="Cedar.Creek.4","CCR_093"="Cedar.Creek.93","Germany_Montane"="Montane","Halle"="Halle","Jena"="Jena","Jena2"="Jena.2","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field","Texas_Temple_Prarie"="Texas.Temple.Prairie"))
 
-pie_fitted$Study<-factor(as.character(pie_fitted$Study))
-pie_exp_coef3$Study<-factor(as.character(pie_exp_coef3$Study))
+pie_fitted$Experiment<-factor(as.character(pie_fitted$Experiment))
+pie_exp_coef3$Experiment<-factor(as.character(pie_exp_coef3$Experiment))
 
 
 
@@ -183,15 +183,15 @@ pie_exp_coef3$Study<-factor(as.character(pie_exp_coef3$Study))
 dr <- ggplot() +
   geom_point(data = pie_fitted,
              aes(x = seed.rich, y = biomass.pie,
-                 colour = Study),
+                 colour = Experiment),
              size = 1.2, position = position_jitter(width = 0.95, height = 0.95)) +
   geom_segment(data = pie_exp_coef3,
                aes(x = xmin,
                    xend = xmax,
                    y = (Intercept + Slope * cxmin),
                    yend = (Intercept + Slope * cxmax),
-                   group = Study,
-                   colour = Study),
+                   group = Experiment,
+                   colour = Experiment),
                size = 1.2) +
   geom_ribbon(data = pie_fitted,
               aes(x = seed.rich, ymin = Q2.5, ymax = Q97.5),
@@ -213,15 +213,15 @@ dr
 pie_fixef_df<-as.data.frame(pie_fixef)
 pie_fixef_df
 
-pie_exp_coef3$Study<-revalue(pie_exp_coef3$Experiment, c("ASGA_Michigan"="Michigan.us", "California_Invade"="California.I.us","California_Prop_Limi"="California.P.L.us","CCR_04"="CedarCreek4.us","CCR_093"="CedarCreek93.us","Germany_Montane"="Montane.de","Halle"="Halle.de","Jena"="Jena.de","Jena2"="Jena2.de","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow.us","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field.us","Texas_Temple_Prarie"="Texas.Temple.Prairie.us"))
+pie_exp_coef3$Experiment<-revalue(pie_exp_coef3$Experiment, c("ASGA_Michigan"="Michigan.us", "California_Invade"="California.I.us","California_Prop_Limi"="California.P.L.us","CCR_04"="CedarCreek4.us","CCR_093"="CedarCreek93.us","Germany_Montane"="Montane.de","Halle"="Halle.de","Jena"="Jena.de","Jena2"="Jena2.de","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow.us","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field.us","Texas_Temple_Prarie"="Texas.Temple.Prairie.us"))
 
-pie_exp_coef3$Study<-as.factor(as.character(pie_exp_coef3$Study))
+pie_exp_coef3$Experiment<-as.factor(as.character(pie_exp_coef3$Experiment))
 
 
 dc<-ggplot() + 
-  geom_point(data = pie_exp_coef3, aes(x = Study, y = Slope,colour = Study),size = 2) +
-  geom_errorbar(data = pie_exp_coef3, aes(x = Study,ymin = Slope_lower,
-                                          ymax = Slope_upper,colour = Study),
+  geom_point(data = pie_exp_coef3, aes(x = Experiment, y = Slope,colour = Experiment),size = 2) +
+  geom_errorbar(data = pie_exp_coef3, aes(x = Experiment,ymin = Slope_lower,
+                                          ymax = Slope_upper,colour = Experiment),
                 width = 0, size = 1) + 
   geom_hline(yintercept = 0, lty = 2) +
   geom_hline(data = filter(pie_fixef_df),
@@ -230,10 +230,10 @@ dc<-ggplot() +
             aes(xmin = -Inf, xmax = Inf,
                 ymin = Q2.5[2], ymax = Q97.5[2]),
             alpha = 0.3) +
-  labs(x = 'Study',
+  labs(x = 'Experiment',
        y=expression(S[PIE] * "/ number of species of seed added") , title= ' ', subtitle= "b)") +
   scale_colour_manual(values = c( "#EE0011FF" , "#EC579AFF", "#15983DFF", "#149BEDFF", "#0C5BB0FF", "#8F2F8BFF","#F9B90AFF", "#16A08CFF" ,"#6A7F93FF","#FA6B09FF","#A1C720FF","#9A703EFF" ))+
-  scale_x_discrete(limits = rev(levels(pie_exp_coef3$Study)))+
+  scale_x_discrete(limits = rev(levels(pie_exp_coef3$Experiment)))+
   coord_flip() + 
   theme_bw()+theme(axis.text.y=element_blank(),panel.grid.major = element_blank(), panel.grid.minor = element_blank(), strip.background = element_rect(colour="black", fill="white"),legend.position="bottom",
                    axis.ticks.y=element_blank())

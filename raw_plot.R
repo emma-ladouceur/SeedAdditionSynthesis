@@ -30,11 +30,11 @@ View(plot)
 # to create figures
 
 library(plyr)
-plot$Study<-revalue(plot$Experiment_, c("ASGA_Michigan"="Michigan.us", "California_Invade"="California.I.us","California_Prop_Limi"="California.P.L.us","CCR_04"="CedarCreek4.us","CCR_093"="CedarCreek93.us","Germany_Montane"="Montane.de","Halle"="Halle.de","Jena"="Jena.de","Jena2"="Jena2.de","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow.us","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field.us","Texas_Temple_Prarie"="Texas.Templ.Prairie.us"))
-plot$Study<-factor(as.character(plot$Study))
+plot$Experiment<-revalue(plot$Experiment_, c("ASGA_Michigan"="Michigan", "California_Invade"="California.1","California_Prop_Limi"="California.2","CCR_04"="Cedar.Creek.4","CCR_093"="Cedar.Creek.93","Germany_Montane"="Montane","Halle"="Halle","Jena"="Jena","Jena2"="Jena.2","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field","Texas_Temple_Prarie"="Texas.Temple.Prairie"))
+plot$Experiment<-factor(as.character(plot$Experiment))
 
 
-rp<-ggplot(plot,aes(x=Study, y=rich.plot)) +
+rp<-ggplot(plot,aes(x=Experiment, y=rich.plot)) +
 geom_jitter( aes(shape = Treatment,color = Treatment),
              position = position_jitterdodge(jitter.width = 0.4,jitter.height = 0.4, dodge.width = 0.8), alpha=0.4,size=1.2) +
   stat_summary(aes(shape=Treatment),
@@ -45,16 +45,16 @@ geom_jitter( aes(shape = Treatment,color = Treatment),
   theme_classic()+theme(axis.text.x = element_text(size=9, angle=7), plot.margin=margin(t=4,1,1,1, "lines"),
                         legend.direction = "horizontal", legend.position = c(0.5,1.2) )+
   # geom_text(data = plot %>%
-  #             group_by(Study) %>%
+  #             group_by(Experiment) %>%
   #             dplyr::mutate(n_plots = n_distinct(unique.id_)) %>%
   #             ungroup() %>%
-  #             distinct(Study, n_plots, .keep_all = T),
-  #           aes(x=Study, y=50,
+  #             distinct(Experiment, n_plots, .keep_all = T),
+  #           aes(x=Experiment, y=50,
   #               label=paste('n[plots] == ', n_plots)),
   #           size=3.5,nudge_y = 0.1, parse = T) +
   labs(title = "a) Plot Species Richness") + ylab("Species Richness") 
 
-bp<-ggplot(plot,aes(x= Study, y= biomass.plot)) +
+bp<-ggplot(plot,aes(x= Experiment, y= biomass.plot)) +
   geom_jitter( aes(shape = Treatment,color = Treatment),
                position = position_jitterdodge(jitter.width = 0.4,jitter.height = 0.4, dodge.width = 0.8), alpha=0.4,size=1.2) +
   stat_summary(aes(shape= Treatment),
