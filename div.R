@@ -4,6 +4,8 @@
 # Authors: Emma R Ladouceur & Shane A. Blowes                          ####
 # Details: Figures S3 : SPIE                                           ####
 # #################################################################### ####
+
+
 # Libraries
 rm(list=ls())
 detach("package:ggplot2", unload=TRUE)
@@ -21,8 +23,7 @@ library(patchwork)
 
 
 # Data
-#setwd('~/Desktop/Academic/R code/SeedAdditionSynthesis/'))
-setwd('~/Dropbox/Projects/SeedAddDraft/')
+setwd('~/')
 spdat<-read.csv("./Data/SeedAdd_Sp_level.csv", header=TRUE) 
 
 spdat.bm<- spdat %>% select(unique.id_,species,biomass.sp)
@@ -66,16 +67,13 @@ seed.pie$seed.rich.m<-seed.pie$seed.rich-mean(seed.pie$seed.rich)
 
 
 seed.pie$Experiment<-seed.pie$Experiment_
-seed.pie$l.b.pie <- log(seed.pie$biomass.pie)
 
 summary(seed.pie)
 
-#write.csv(seed.pie,"~/Dropbox/Projects/SeedAdd/Data/seed.pie.csv")
+#write.csv(seed.pie,"~/Data/seed.pie.csv")
 
 
 # Diversity Models
-
-#setwd('~/Desktop/Academic/R code/SeedAdditionSynthesis/')
 setwd('~/Dropbox/Projects/SeedAddDraft/')
 seed.pie.d<-read.csv("./Data/seed.pie.csv", header=TRUE) %>%
   as_tibble()
