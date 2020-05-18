@@ -1,10 +1,9 @@
 # #################################################################### ####
-# Title: Comparing the effects of seeded diversity on species richness ####
-#        and above ground biomass , and community assembly             #### 
+# Title: Reducing dispersal limitation via seed addition leads to      ####
+#        increased species richness, but not aboveground biomass       #### 
 # Authors: Emma R Ladouceur & Shane A. Blowes                          ####
-# Details: Figure S4                                                   ####
+# Details: Figure S4  : Community Composition                          ####
 # #################################################################### ####
-
 
 rm(list=ls())
 detach("package:ggplot2", unload=TRUE)
@@ -329,6 +328,7 @@ betan_fitted$Experiment<-revalue(betan_fitted$Experiment, c("ASGA_Michigan"="Mic
 betan_fitted$Experiment<-factor(as.character(betan_fitted$Experiment))
 
 
+# Figure S4 b) : Turnover coefficients
 tc<-ggplot() + 
   geom_point(data = betat_exp_coef2, aes(x = Experiment, y = Slope,colour = Experiment),size = 2) +
   geom_errorbar(data = betat_exp_coef2, aes(x = Experiment,ymin = Slope_lower,
@@ -350,7 +350,7 @@ tc<-ggplot() +
                    axis.text.y=element_blank(),
                    axis.ticks.y=element_blank())
 
-
+# Figure S 4 d) : Nestedness Coefficients
 nc<-ggplot() + 
   geom_point(data = betan_exp_coef2, aes(x = Experiment, y = Slope,colour = Experiment),size = 2) +
   geom_errorbar(data = betan_exp_coef2, aes(x = Experiment,ymin = Slope_lower,
@@ -389,6 +389,7 @@ color_line <- c("#EC579AFF", "#149BEDFF","#8F2F8BFF")
 
 betat.point
 
+# Figure S4 a) : Turnover Regression
 btr <-
 ggplot() +
   geom_point(data = betat_fitted,
@@ -426,6 +427,7 @@ summary(nested.zib)
 
 View(betat_exp_coef2)
 
+# Figure S4 c) : Nestedness Regression
 bnr <- ggplot() +
   geom_point(data = betan_fitted,
              aes(x = seed.rich, y = jne,

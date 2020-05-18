@@ -1,8 +1,10 @@
 # #################################################################### ####
-# Title: Comparing the effects of seeded diversity on species richness ####
-#        and above ground biomass , and community assembly             #### 
-# Authors: Emma R Ladouceur & Shane A. Blowes                           ####
+# Title: Reducing dispersal limitation via seed addition leads to      ####
+#        increased species richness, but not aboveground biomass       #### 
+# Authors: Emma R Ladouceur & Shane A. Blowes                          ####
+# Details: Multivariate model                                          ####
 # #################################################################### ####
+
 
 rm(list=ls())
 detach("package:ggplot2", unload=TRUE)
@@ -48,8 +50,10 @@ load("./Model Fits/multi.Rdata") # object name: seedadd.multi
 # check  correlation coefficients between variables
 summary(seedadd.multi)
 
+# inspection of chain diagnostics
 plot(seedadd.multi)
 
+# predicted vs observed data
 pmb2<-pp_check(seedadd.multi, resp = 'lbiomass')+ theme_classic()
 pmr2<-pp_check(seedadd.multi, resp = 'richplot')+ theme_classic()
 # Figure S1 f

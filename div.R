@@ -1,10 +1,9 @@
 # #################################################################### ####
-# Title: Comparing the effects of seeded diversity on species richness ####
-#        and above ground biomass , and community assembly             #### 
-# Authors: Emma R Ladouceur & Shane A. Blowes                           ####
-# Details: Figures S3                                                  ####
+# Title: Reducing dispersal limitation via seed addition leads to      ####
+#        increased species richness, but not aboveground biomass       #### 
+# Authors: Emma R Ladouceur & Shane A. Blowes                          ####
+# Details: Figures S3 : SPIE                                           ####
 # #################################################################### ####
-
 # Libraries
 rm(list=ls())
 detach("package:ggplot2", unload=TRUE)
@@ -166,8 +165,6 @@ pie_exp_coef3 <- pie_exp_coef2 %>%
              by = 'Experiment')
 
 
-# use grid_arrange_shared_legend function at the beginning of Main_Analysis.R
-# to create figures
 
 library(plyr)
 pie_fitted$Experiment<-as.factor(as.character(pie_fitted$Experiment))
@@ -179,7 +176,7 @@ pie_exp_coef3$Experiment<-factor(as.character(pie_exp_coef3$Experiment))
 
 
 
-# regression
+# Figure S3 a) : Evenness Regression
 dr <- ggplot() +
   geom_point(data = pie_fitted,
              aes(x = seed.rich, y = biomass.pie,
@@ -217,7 +214,7 @@ pie_exp_coef3$Experiment<-revalue(pie_exp_coef3$Experiment, c("ASGA_Michigan"="M
 
 pie_exp_coef3$Experiment<-as.factor(as.character(pie_exp_coef3$Experiment))
 
-
+# Figure S3 b) : Evenness coefficients
 dc<-ggplot() + 
   geom_point(data = pie_exp_coef3, aes(x = Experiment, y = Slope,colour = Experiment),size = 2) +
   geom_errorbar(data = pie_exp_coef3, aes(x = Experiment,ymin = Slope_lower,

@@ -1,19 +1,14 @@
 # #################################################################### ####
-# Title: Comparing the effects of seeded diversity on species richness ####
-#        and above ground biomass , and community assembly             #### 
+# Title: Reducing dispersal limitation via seed addition leads to      ####
+#        increased species richness, but not aboveground biomass       #### 
 # Authors: Emma R Ladouceur & Shane A. Blowes                          ####
-# Details: Figures 1-3                                                 ####
+# Details: Main Figures 1-3                                            ####
 # #################################################################### ####
 
 # Libraries 
-rm(list=ls())
-detach("package:ggplot2", unload=TRUE)
-detach("package:plyr", unload=TRUE)
 library(tidyverse)
 library(brms)
 library(ggplot2)
-library(gridExtra)
-library(grid)
 library(bayesplot)
 library(patchwork)
 
@@ -53,7 +48,8 @@ save(seedadd.biomass, file = './biomass.Rdata')
 
 # richness model summary
 summary(seedadd.rich)
-summary(seedadd.biomass)
+# inspection of chain diagnostics
+plot(seedadd.biomass) 
 
 # Figure S1a
 color_scheme_set("darkgray")
@@ -114,7 +110,6 @@ S_seed_exp_coef2 <-  bind_cols(S_seed_exp_coef$Experiment[,,'Intercept'] %>%
 # Biomass model
 summary(seedadd.biomass)
 
-
 # inspection of chain diagnostics
 plot(seedadd.biomass) 
 
@@ -167,8 +162,6 @@ biomass_exp_coef2 <-  bind_cols(biomass_exp_coef$Experiment[,,'Intercept'] %>%
              by = 'Experiment')
 
 
-# use grid_arrange_shared_legend function at the beginning of  this script
-# to create figures
 
 library(plyr)
 S_seed_fitted$Experiment<-revalue(S_seed_fitted$Experiment, c("ASGA_Michigan"="Michigan", "California_Invade"="California.1","California_Prop_Limi"="California.2","CCR_04"="Cedar.Creek.4","CCR_093"="Cedar.Creek.93","Germany_Montane"="Montane","Halle"="Halle","Jena"="Jena","Jena2"="Jena.2","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field","Texas_Temple_Prarie"="Texas.Temple.Prairie"))
@@ -185,7 +178,7 @@ biomass_fitted$Experiment<-factor(as.character(biomass_fitted$Experiment))
 biomass_exp_coef2$Experiment<-factor(as.character(biomass_exp_coef2$Experiment))
 
 
-# Figure 1 prep
+# Figure 1 & 2 prep
 
 S_seed_fixef_df<-as.data.frame(S_seed_fixef)
 biomass_fixef_df<-as.data.frame((biomass_fixef))
@@ -194,7 +187,8 @@ biomass_fixef_df$Model<-'Biomass'
 fixef.all<-bind_rows(S_seed_fixef_df,biomass_fixef_df)
 fixef.all
 
-rb<-ggplot() + 
+# Figure 1 b) Richness
+fig1b<-ggplot() + 
   geom_point(data = S_seed_exp_coef2, aes(x = Experiment, y = Slope,colour = Experiment),size = 2) +
   geom_errorbar(data = S_seed_exp_coef2, aes(x = Experiment,ymin = Slope_lower,
                                              ymax = Slope_upper,colour = Experiment),
@@ -216,8 +210,8 @@ rb<-ggplot() +
                   axis.text.y=element_blank(),
                    axis.ticks.y=element_blank())
 
-
-bb<-ggplot() + 
+# Figure 2 b) Biomass
+fig2b<-ggplot() + 
   geom_point(data = biomass_exp_coef2, aes(x = Experiment, y = Slope,colour = Experiment),size = 2) +
   geom_errorbar(data = biomass_exp_coef2, aes(x = Experiment,ymin = Slope_lower,
                                               ymax = Slope_upper,colour = Experiment),
@@ -239,12 +233,10 @@ bb<-ggplot() +
                    axis.text.y=element_blank(),
                    axis.ticks.y=element_blank())
 
-# Figure 1
 
+# Figure 1 a) Richness
 
-# Figure 2 a) Richness
-
-ra<-ggplot() +
+fig1a<-ggplot() +
   geom_point(data = S_seed_fitted,
              aes(x = seed.rich, y = rich.plot,
                  colour = Experiment),
@@ -273,9 +265,9 @@ ra<-ggplot() +
                                                                                                                              legend.position="bottom")
 
 
-# Figure 2 b) Biomass
+# Figure 2 a) Biomass
 
-ba<-ggplot() +
+fig2a<-ggplot() +
   geom_point(data = biomass_fitted,
              aes(x = seed.rich, y = biomass.plot,
                  colour = Experiment),
@@ -314,14 +306,11 @@ g_legend<-function(a.gplot){
 
 m.legend<-g_legend(ba)
 
-# (ra | rb)/(ba | bb+ theme(legend.position="none"))/(m.legend)  +
-#   plot_layout(heights = c(10,10,2.5))
 
-
-(ra+ theme(legend.position="none") | rb)/(m.legend)  +
+(fig1a+ theme(legend.position="none") | fig1b)/(m.legend)  +
   plot_layout(heights = c(10,1))
 
-(ba+ theme(legend.position="none") | bb)/(m.legend)  +
+(fig2a+ theme(legend.position="none") | fig2b)/(m.legend)  +
   plot_layout(heights = c(10,1))
 
 
@@ -342,6 +331,7 @@ delta.coefs$Experiment<-factor(as.character(delta.coefs$Experiment))
 
 
 # Figure 3
+
 ggplot(data=delta.coefs, aes(x=R.Slope, y=B.Slope,color=Experiment)) +
   geom_point(size=2) +
   geom_errorbar(aes(ymin = B.Slope_lower, ymax = B.Slope_upper,colour = Experiment), width = 0, size = 0.75,alpha=0.5) +
