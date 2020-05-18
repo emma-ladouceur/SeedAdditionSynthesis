@@ -9,13 +9,13 @@ This project uses **community and biomass data**,derived from previously publish
 ### Data
 Four datasets associated with this project are found on Figshare DOI listed above.
 
-**Plot Level Data** These data summarise species richness and aboveground level biomass responses to a range of diverse seeding treatments across 12 seed addition and diversity experiments. _SeedAdd_Plot_Level.csv_
+**Plot Level Data** These data summarise species richness and aboveground level biomass responses to a range of diverse seeding treatments across 12 seed addition and diversity experiments. Filename:  _SeedAdd_Plot_Level.csv_
 
-**Beta Diversity** These data summarise the turnover and nestedness components of Beta diversity responses to a range of diverse seeding treatments across 12 seed addition and diversity experiments. _betadf.csv_
+**Beta Diversity** These data summarise the turnover and nestedness components of Beta diversity responses to a range of diverse seeding treatments across 12 seed addition and diversity experiments. Filename:  _betadf.csv_
 
-**Effective Number of Species** These data summarise the effective number of species responses to a range of diverse seeding treatments across 12 seed addition and diversity experiments. _seed.pie.csv_
+**Effective Number of Species** These data summarise the effective number of species responses to a range of diverse seeding treatments across 12 seed addition and diversity experiments. Filename:  _seed.pie.csv_
 
-**Species Level Data** For species level data please contact lead author. _SeedAdd_Sp_Lvel.csv_
+**Species Level Data** For species level data please contact lead author. Filename:  _SeedAdd_Sp_Level.csv_
 
 ### **R Scripts** 
 Four scripts are provided in this repository.
