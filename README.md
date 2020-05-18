@@ -1,8 +1,7 @@
 # SeedAdditionSynthesis [![DOI](https://zenodo.org/badge/237269967.svg)](https://zenodo.org/badge/latestdoi/237269967)
 Reducing dispersal limitation via seed addition increases species richness but not aboveground biomass
 
-Code used to generate results, and figures for DOI: 
-Data DOI: 10.6084/m9.figshare.12319682
+Code used to generate results, and figures for DOI: ### , and Data DOI: 10.6084/m9.figshare.12319682
 
 This project uses **community and biomass data**,derived from previously published **seed addition experiments**, this README points to the data used, and this repository provides the **R scripts** to investigate and understand models, process data, and generate results and figures.
 
