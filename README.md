@@ -1,4 +1,4 @@
-# SeedAdditionSynthesis
+# SeedAdditionSynthesis [![DOI](https://zenodo.org/badge/237269967.svg)](https://zenodo.org/badge/latestdoi/237269967)
 Reducing dispersal limitation via seed addition increases species richness but not aboveground biomass
 
 Code used to generate results, and figures for DOI: 
