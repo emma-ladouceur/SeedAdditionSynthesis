@@ -18,8 +18,8 @@ library(grid)
 library(bayesplot)
 
 #setwd('~/Desktop/Academic/R code/SeedAdditionSynthesis/')
-setwd('~/Dropbox/Projects/SeedAddDraft/')
-plot<-read.csv("./Data/SeedAdd_Plot_Level.csv", header=TRUE) %>%
+setwd('~/Data')
+plot<-read.csv("./SeedAdd_Plot_Level.csv", header=TRUE) %>%
   as_tibble()
 
 plot$fyr.trt<-as.factor(plot$yr.trt)
@@ -43,7 +43,7 @@ load("./Model Fits/multi.Rdata") # object name: seedadd.multi
                data = plot, cores = 4, chains = 4)
 
 
- setwd('~/Dropbox/Projects/SeedAdd/Model_fits/')
+ setwd('~/Model_fits/')
  save(seedadd.multi, file = './multi.Rdata')
  
  

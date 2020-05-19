@@ -14,8 +14,8 @@ library(ggforce)
 library(patchwork)
 
 #setwd('~/Desktop/Academic/R code/SeedAdditionSynthesis/')
-setwd('~/Dropbox/Projects/SeedAddDraft/')
-plot<-read.csv("./Data/SeedAdd_Plot_Level.csv", header=TRUE) %>%
+setwd('~/Data/')
+plot<-read.csv("./SeedAdd_Plot_Level.csv", header=TRUE) %>%
   as_tibble()
 
 

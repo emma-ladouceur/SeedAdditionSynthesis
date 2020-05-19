@@ -23,8 +23,8 @@ library(patchwork)
 
 
 # Data
-setwd('~/')
-spdat<-read.csv("./Data/SeedAdd_Sp_level.csv", header=TRUE) 
+setwd('~/Data/')
+spdat<-read.csv("./SeedAdd_Sp_level.csv", header=TRUE) 
 
 spdat.bm<- spdat %>% select(unique.id_,species,biomass.sp)
 
@@ -74,8 +74,8 @@ summary(seed.pie)
 
 
 # Diversity Models
-setwd('~/Dropbox/Projects/SeedAddDraft/')
-seed.pie.d<-read.csv("./Data/seed.pie.csv", header=TRUE) %>%
+
+seed.pie.d<-read.csv("./seed.pie.csv", header=TRUE) %>%
   as_tibble()
 
 

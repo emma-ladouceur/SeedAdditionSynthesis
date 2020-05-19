@@ -15,8 +15,8 @@ library(patchwork)
 
 # Data
 #setwd('~/Desktop/Academic/R code/SeedAdditionSynthesis/')
-setwd('~/Dropbox/Projects/SeedAddDraft/')
-plot<-read.csv("./Data/SeedAdd_Plot_Level.csv", header=TRUE) %>%
+setwd('~/Data/')
+plot<-read.csv("./SeedAdd_Plot_Level.csv", header=TRUE) %>%
   as_tibble()
 
 plot$fyr.trt<-as.factor(plot$yr.trt)
@@ -41,7 +41,7 @@ load("./Model Fits/biomass.Rdata") # object name: seedadd.biomass
 #                    data = plot,
 #                    chains = 4, cores = 4)
 
-setwd('~/Dropbox/Projects/SeedAdd/Model_fits/')
+setwd('~/Model_fits/')
 save(seedadd.rich, file = './rich.Rdata')
 save(seedadd.biomass, file = './biomass.Rdata')
 

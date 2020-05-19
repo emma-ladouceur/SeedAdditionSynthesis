@@ -21,8 +21,8 @@ library(ggplot2)
 
 
 
-setwd('~/Desktop/Academic/R code/SeedAdditionSynthesis/')
-plot<-read.csv("./Data/SeedAdd_Plot_Level.csv", header=TRUE) %>%
+setwd('~/Data/')
+plot<-read.csv("./SeedAdd_Plot_Level.csv", header=TRUE) %>%
   as_tibble()
 
 plot$unique.id<-plot$unique.id_
@@ -157,12 +157,12 @@ beta.df = wide.df %>%
 
 
 # write.csv(beta.df,"./Data/beta.df.csv")
-setwd('~/Dropbox/Projects/SeedAddDraft/')
-beta<-read.csv("./Data/beta.df.csv", header=TRUE) %>%
+setwd('~/Data/')
+beta<-read.csv("./beta.df.csv", header=TRUE) %>%
   as_tibble()
 
 # sb
-beta<-read.csv("~/Dropbox/SeedAdd/Data/beta.df.csv", header=TRUE) %>%
+beta<-read.csv("~/Data/beta.df.csv", header=TRUE) %>%
   as_tibble()
 
 beta$Experiment<-beta$Experiment_
@@ -180,9 +180,9 @@ View(beta2)
 
 # Load model objects
 load("./Model Fits/betat.Rdata") # object name: turnover.zoib
-load("~/Dropbox/SeedAdd/Model_fits/betat.Rdata") # object name: turnover.zoib
+load("./Model Fits/betat.Rdata") # object name: turnover.zoib
 load("./Model Fits/betan.Rdata") # object name: nested.zib
-load("~/Dropbox/SeedAdd/Model_fits/betan.Rdata") # object name: nested.zib
+load(".Model Fits/betan.Rdata") # object name: nested.zib
 
 # turnover.zoib <- brm(jtu ~  seed.rich + (seed.rich | Experiment/site/block/fyr.trt),
 #                          family=zero_one_inflated_beta(),
