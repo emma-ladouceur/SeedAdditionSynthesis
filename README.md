@@ -31,6 +31,6 @@ Four scripts are provided in this repository.
 
 **Beta.R** Includes data, model objects and analyses used to understand the effect of seeded richness on the turnover and nestedness components of Beta diversity. This code produces Figure S4.
 
-**Citations** Please see details in the Figshare data description and in the listed paper.These data are made freely available for future research, but we request that the original publications attached to each dataset (please see paper Table 1 and Table S1) included in this synthesis and the publication attached to this repository be cited as the source of these values if some or all of them are used:
+**Citations** Please see details in the Figshare data description and in the listed paper. These data are made freely available for future research, but we request that the original publications attached to each dataset (please see paper Table 1 and Table S1) included in this synthesis and the publication attached to this repository be cited as the source of these values if some or all of them are used:
 
 *Emma Ladouceur, W. Stanley Harpole, Shane A. Blowes, Christiane Roscher, Harald Auge, Eric W. Seabloom, Jonathan M. Chase. (2020) Reducing dispersal limitation via seed addition increases species richness but not above-ground biomass. Ecology Letters. DOI:  10.1111/ele.13566*
