@@ -5,24 +5,16 @@
 # Details: Figure S4  : Community Composition                          ####
 # #################################################################### ####
 
-rm(list=ls())
-detach("package:ggplot2", unload=TRUE)
-detach("package:plyr", unload=TRUE)
-
-
-library(tidyr)
-library(dplyr)
-library(betapart)
-library(tibble) 
+# Libraries
 library(tidyverse)
+library(betapart)
 library(bayesplot)
 library(patchwork)
 library(ggplot2)
 
 
 
-setwd('~/Data/')
-plot<-read.csv("./SeedAdd_Plot_Level.csv", header=TRUE) %>%
+plot<-read.csv("./Data/SeedAdd_Plot_Level.csv", header=TRUE) %>%
   as_tibble()
 
 plot$unique.id<-plot$unique.id_
@@ -157,12 +149,8 @@ beta.df = wide.df %>%
 
 
 # write.csv(beta.df,"./Data/beta.df.csv")
-setwd('~/Data/')
-beta<-read.csv("./beta.df.csv", header=TRUE) %>%
-  as_tibble()
 
-# sb
-beta<-read.csv("~/Data/beta.df.csv", header=TRUE) %>%
+beta<-read.csv("./Data/beta.df.csv", header=TRUE) %>%
   as_tibble()
 
 beta$Experiment<-beta$Experiment_
@@ -180,9 +168,7 @@ View(beta2)
 
 # Load model objects
 load("./Model Fits/betat.Rdata") # object name: turnover.zoib
-load("./Model Fits/betat.Rdata") # object name: turnover.zoib
 load("./Model Fits/betan.Rdata") # object name: nested.zib
-load(".Model Fits/betan.Rdata") # object name: nested.zib
 
 # turnover.zoib <- brm(jtu ~  seed.rich + (seed.rich | Experiment/site/block/fyr.trt),
 #                          family=zero_one_inflated_beta(),
@@ -190,8 +176,8 @@ load(".Model Fits/betan.Rdata") # object name: nested.zib
 #                          inits = '0',
 #                          cores = 4, chains = 4)
 # 
-# setwd('~/Dropbox/Projects/SeedAdd/Model_fits/')
-# save(turnover.zoib, file = './betat.Rdata')
+
+# save(turnover.zoib, file = './Model_fits/betat.Rdata')
 
 # Turnover model
 summary(turnover.zoib)
@@ -238,8 +224,8 @@ betat_exp_coef2 <-  bind_cols(betat_exp_coef$Experiment[,,'Intercept'] %>%
 #                       inits = '0',
 #                       cores = 4, chains = 4)
 # 
-# setwd('~/Dropbox/Projects/SeedAdd/Model_fits/')
-# save(nested.zib, file = './betan.Rdata')
+
+# save(nested.zib, file = './Model_fits/betan.Rdata')
 
 summary(nested.zib)
 plot(nested.zib) 
@@ -315,16 +301,16 @@ betan_fixef_df$Model<-'Nestedness'
 fixef.all<-bind_rows(betat_fixef_df,betan_fixef_df)
 fixef.all
 
-library(plyr)
-betat_exp_coef2$Experiment<-revalue(betat_exp_coef2$Experiment, c("ASGA_Michigan"="Michigan", "California_Invade"="California.1","California_Prop_Limi"="California.2","CCR_04"="Cedar.Creek.4","CCR_093"="Cedar.Creek.93","Germany_Montane"="Montane","Halle"="Halle","Jena"="Jena","Jena2"="Jena.2","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field","Texas_Temple_Prarie"="Texas.Temple.Prairie"))
-betan_exp_coef2$Experiment<-revalue(betan_exp_coef2$Experiment, c("ASGA_Michigan"="Michigan", "California_Invade"="California.1","California_Prop_Limi"="California.2","CCR_04"="Cedar.Creek.4","CCR_093"="Cedar.Creek.93","Germany_Montane"="Montane","Halle"="Halle","Jena"="Jena","Jena2"="Jena.2","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field","Texas_Temple_Prarie"="Texas.Temple.Prairie"))
+
+betat_exp_coef2$Experiment<-plyr::revalue(betat_exp_coef2$Experiment, c("ASGA_Michigan"="Michigan", "California_Invade"="California.1","California_Prop_Limi"="California.2","CCR_04"="Cedar.Creek.4","CCR_093"="Cedar.Creek.93","Germany_Montane"="Montane","Halle"="Halle","Jena"="Jena","Jena2"="Jena.2","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field","Texas_Temple_Prarie"="Texas.Temple.Prairie"))
+betan_exp_coef2$Experiment<-plyr::revalue(betan_exp_coef2$Experiment, c("ASGA_Michigan"="Michigan", "California_Invade"="California.1","California_Prop_Limi"="California.2","CCR_04"="Cedar.Creek.4","CCR_093"="Cedar.Creek.93","Germany_Montane"="Montane","Halle"="Halle","Jena"="Jena","Jena2"="Jena.2","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field","Texas_Temple_Prarie"="Texas.Temple.Prairie"))
 
 betat_exp_coef2$Experiment<-factor(as.character(betat_exp_coef2$Experiment))
 betan_exp_coef2$Experiment<-factor(as.character(betan_exp_coef2$Experiment))
 
-betat_fitted$Experiment<-revalue(betat_fitted$Experiment, c("ASGA_Michigan"="Michigan", "California_Invade"="California.1","California_Prop_Limi"="California.2","CCR_04"="Cedar.Creek.4","CCR_093"="Cedar.Creek.93","Germany_Montane"="Montane","Halle"="Halle","Jena"="Jena","Jena2"="Jena.2","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field","Texas_Temple_Prarie"="Texas.Temple.Prairie"))
+betat_fitted$Experiment<-plyr::revalue(betat_fitted$Experiment, c("ASGA_Michigan"="Michigan", "California_Invade"="California.1","California_Prop_Limi"="California.2","CCR_04"="Cedar.Creek.4","CCR_093"="Cedar.Creek.93","Germany_Montane"="Montane","Halle"="Halle","Jena"="Jena","Jena2"="Jena.2","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field","Texas_Temple_Prarie"="Texas.Temple.Prairie"))
 betat_fitted$Experiment<-factor(as.character(betat_fitted$Experiment))
-betan_fitted$Experiment<-revalue(betan_fitted$Experiment, c("ASGA_Michigan"="Michigan", "California_Invade"="California.1","California_Prop_Limi"="California.2","CCR_04"="Cedar.Creek.4","CCR_093"="Cedar.Creek.93","Germany_Montane"="Montane","Halle"="Halle","Jena"="Jena","Jena2"="Jena.2","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field","Texas_Temple_Prarie"="Texas.Temple.Prairie"))
+betan_fitted$Experiment<-plyr::revalue(betan_fitted$Experiment, c("ASGA_Michigan"="Michigan", "California_Invade"="California.1","California_Prop_Limi"="California.2","CCR_04"="Cedar.Creek.4","CCR_093"="Cedar.Creek.93","Germany_Montane"="Montane","Halle"="Halle","Jena"="Jena","Jena2"="Jena.2","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field","Texas_Temple_Prarie"="Texas.Temple.Prairie"))
 betan_fitted$Experiment<-factor(as.character(betan_fitted$Experiment))
 
 
@@ -381,10 +367,9 @@ betat.point<-betat_exp_coef2 %>% filter(xmin==xmax)
 betan.line<-betan_exp_coef2 %>% filter(xmin < xmax)
 betan.point<-betan_exp_coef2 %>% filter(xmin==xmax)
 
-#"#EE0011FF" , "#EC579AFF", "#15983DFF", "#149BEDFF", "#0C5BB0FF", "#8F2F8BFF","#F9B90AFF" , "#16A08CFF" ,"#6A7F93FF","#FA6B09FF","#A1C720FF","#9A703EFF"
-
+# assign colors for each line and point
 color_line <- c("#EC579AFF", "#149BEDFF","#8F2F8BFF")
- color_point <- c("#FA6B09FF","#EE0011FF" , "#15983DFF","#A1C720FF","#0C5BB0FF","#F9B90AFF", "#16A08CFF" ,"#6A7F93FF","#9A703EFF" )
+color_point <- c("#FA6B09FF","#EE0011FF" , "#15983DFF","#A1C720FF","#0C5BB0FF","#F9B90AFF", "#16A08CFF" ,"#6A7F93FF","#9A703EFF" )
 
 
 betat.point

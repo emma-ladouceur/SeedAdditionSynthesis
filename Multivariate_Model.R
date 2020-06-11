@@ -6,9 +6,6 @@
 # #################################################################### ####
 
 
-rm(list=ls())
-detach("package:ggplot2", unload=TRUE)
-detach("package:plyr", unload=TRUE)
 library(tidyverse)
 library(brms)
 library(dplyr)
@@ -17,9 +14,9 @@ library(gridExtra)
 library(grid)
 library(bayesplot)
 
-#setwd('~/Desktop/Academic/R code/SeedAdditionSynthesis/')
+
 setwd('~/Data')
-plot<-read.csv("./SeedAdd_Plot_Level.csv", header=TRUE) %>%
+plot<-read.csv("./Data/SeedAdd_Plot_Level.csv", header=TRUE) %>%
   as_tibble()
 
 plot$fyr.trt<-as.factor(plot$yr.trt)
@@ -84,7 +81,6 @@ with(plot, plot(seed.rich, residual_mm1_rich))
 with(plot, plot(seed.rich, residual_mm1_biomass))
 
 
-# make sure to detach plyr at top
 
 mm_fitted <- cbind(seedadd.multi$data,
                    fitted(seedadd.multi, re_formula = NA)) %>% 
@@ -142,8 +138,7 @@ mm_coefb <-  bind_cols(mm_coef$Experiment[,,'lbiomass_Intercept'] %>%
                          cxmax = max(seed.rich.m)),
              by = 'Experiment')
 
-# use grid_arrange_shared_legend function at the beginning of Main_Analysis.R
-# to create figures
+
 
 #Delta plot
 mm_coefr2<-mm_coefr[,c(-1,-2,-3,-8,-9,-10,-11)]
@@ -156,8 +151,8 @@ m.delta.coefs<-bind_cols(mm_coefr2,mm_coefb2)
 
 
 
-library(plyr)
-m.delta.coefs$Study<-revalue(m.delta.coefs$Experiment, c("ASGA_Michigan"="Michigan.us", "California_Invade"="California.I.us","California_Prop_Limi"="California.P.L.us","CCR_04"="CedarCreek4.us","CCR_093"="CedarCreek93.us","Germany_Montane"="Montane.de","Halle"="Halle.de","Jena"="Jena.de","Jena2"="Jena2.de","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow.us","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field.us","Texas_Temple_Prarie"="Texas.Templ.Prairie.us"))
+
+m.delta.coefs$Study<-plyr::revalue(m.delta.coefs$Experiment, c("ASGA_Michigan"="Michigan.us", "California_Invade"="California.I.us","California_Prop_Limi"="California.P.L.us","CCR_04"="CedarCreek4.us","CCR_093"="CedarCreek93.us","Germany_Montane"="Montane.de","Halle"="Halle.de","Jena"="Jena.de","Jena2"="Jena2.de","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow.us","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field.us","Texas_Temple_Prarie"="Texas.Templ.Prairie.us"))
 m.delta.coefs$Study<-factor(as.character(m.delta.coefs$Study))
 
 ggplot(data=m.delta.coefs, aes(x=R.Slope, y=B.Slope,color=Study)) +

@@ -7,15 +7,10 @@
 
 
 # Libraries
-rm(list=ls())
-detach("package:ggplot2", unload=TRUE)
-detach("package:plyr", unload=TRUE)
 library(tidyverse)
 library(tibble)
 library(data.table)
 library(ggplot2)
-library(gridExtra)
-library(grid)
 library(brms)
 library(vegan)
 library(bayesplot)
@@ -23,8 +18,8 @@ library(patchwork)
 
 
 # Data
-setwd('~/Data/')
-spdat<-read.csv("./SeedAdd_Sp_level.csv", header=TRUE) 
+
+spdat<-read.csv("./Data/SeedAdd_Sp_level.csv", header=TRUE) 
 
 spdat.bm<- spdat %>% select(unique.id_,species,biomass.sp)
 
@@ -75,7 +70,7 @@ summary(seed.pie)
 
 # Diversity Models
 
-seed.pie.d<-read.csv("./seed.pie.csv", header=TRUE) %>%
+seed.pie.d<-read.csv("./Data/seed.pie.csv", header=TRUE) %>%
   as_tibble()
 
 
@@ -97,8 +92,7 @@ load("./Model Fits/seed.pie.Rdata") # object name: m.seed.pie
 # seed.pie <- brm(biomass.pie ~  seed.rich.m + (seed.rich.m | Experiment/site/block/fyr.trt),
 #                      data = seed.pie, cores = 4, chains = 4)
 # 
-# setwd('~/Dropbox/Projects/SeedAdd/Model_fits/')
-# save(seed.pie, file = './seed.pie.Rdata')
+# save(seed.pie, file = './Model Fits/seed.pie.Rdata')
 
 summary(seed.pie)
 
@@ -166,8 +160,8 @@ pie_exp_coef3 <- pie_exp_coef2 %>%
 
 library(plyr)
 pie_fitted$Experiment<-as.factor(as.character(pie_fitted$Experiment))
-pie_fitted$Experiment<-revalue(pie_fitted$Experiment, c("ASGA_Michigan"="Michigan", "California_Invade"="California.1","California_Prop_Limi"="California.2","CCR_04"="Cedar.Creek.4","CCR_093"="Cedar.Creek.93","Germany_Montane"="Montane","Halle"="Halle","Jena"="Jena","Jena2"="Jena.2","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field","Texas_Temple_Prarie"="Texas.Temple.Prairie"))
-pie_exp_coef3$Experiment<-revalue(pie_exp_coef3$Experiment, c("ASGA_Michigan"="Michigan", "California_Invade"="California.1","California_Prop_Limi"="California.2","CCR_04"="Cedar.Creek.4","CCR_093"="Cedar.Creek.93","Germany_Montane"="Montane","Halle"="Halle","Jena"="Jena","Jena2"="Jena.2","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field","Texas_Temple_Prarie"="Texas.Temple.Prairie"))
+pie_fitted$Experiment<-plyr::revalue(pie_fitted$Experiment, c("ASGA_Michigan"="Michigan", "California_Invade"="California.1","California_Prop_Limi"="California.2","CCR_04"="Cedar.Creek.4","CCR_093"="Cedar.Creek.93","Germany_Montane"="Montane","Halle"="Halle","Jena"="Jena","Jena2"="Jena.2","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field","Texas_Temple_Prarie"="Texas.Temple.Prairie"))
+pie_exp_coef3$Experiment<-plyr::revalue(pie_exp_coef3$Experiment, c("ASGA_Michigan"="Michigan", "California_Invade"="California.1","California_Prop_Limi"="California.2","CCR_04"="Cedar.Creek.4","CCR_093"="Cedar.Creek.93","Germany_Montane"="Montane","Halle"="Halle","Jena"="Jena","Jena2"="Jena.2","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field","Texas_Temple_Prarie"="Texas.Temple.Prairie"))
 
 pie_fitted$Experiment<-factor(as.character(pie_fitted$Experiment))
 pie_exp_coef3$Experiment<-factor(as.character(pie_exp_coef3$Experiment))
@@ -202,13 +196,13 @@ dr <- ggplot() +
 
 dr
 
-#coefs 
+# coefs 
 
 #fixed
 pie_fixef_df<-as.data.frame(pie_fixef)
 pie_fixef_df
 
-pie_exp_coef3$Experiment<-revalue(pie_exp_coef3$Experiment, c("ASGA_Michigan"="Michigan.us", "California_Invade"="California.I.us","California_Prop_Limi"="California.P.L.us","CCR_04"="CedarCreek4.us","CCR_093"="CedarCreek93.us","Germany_Montane"="Montane.de","Halle"="Halle.de","Jena"="Jena.de","Jena2"="Jena2.de","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow.us","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field.us","Texas_Temple_Prarie"="Texas.Temple.Prairie.us"))
+pie_exp_coef3$Experiment<-plyr::revalue(pie_exp_coef3$Experiment, c("ASGA_Michigan"="Michigan.us", "California_Invade"="California.I.us","California_Prop_Limi"="California.P.L.us","CCR_04"="CedarCreek4.us","CCR_093"="CedarCreek93.us","Germany_Montane"="Montane.de","Halle"="Halle.de","Jena"="Jena.de","Jena2"="Jena2.de","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow.us","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field.us","Texas_Temple_Prarie"="Texas.Temple.Prairie.us"))
 
 pie_exp_coef3$Experiment<-as.factor(as.character(pie_exp_coef3$Experiment))
 
@@ -236,7 +230,7 @@ dc<-ggplot() +
 dc
 
 
-#extract legend
+# extract legend
 #https://github.com/hadley/ggplot2/wiki/Share-a-legend-between-two-ggplot2-graphs
 g_legend<-function(a.gplot){
   tmp <- ggplot_gtable(ggplot_build(a.gplot))
@@ -246,7 +240,7 @@ g_legend<-function(a.gplot){
 
 d.legend<-g_legend(dr)
 
-
+# use patchwork for legend
 (dr+ theme(legend.position="none") | dc+ theme(legend.position="none"))/(d.legend)  +
   plot_layout(heights = c(10,1))
 

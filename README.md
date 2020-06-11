@@ -1,9 +1,11 @@
 # SeedAdditionSynthesis [![DOI](https://zenodo.org/badge/237269967.svg)](https://zenodo.org/badge/latestdoi/237269967)
-Reducing dispersal limitation via seed addition increases species richness but not aboveground biomass
 
-Code used to generate results, and figures for DOI: ### , and Data DOI: 10.6084/m9.figshare.12319682
+Emma Ladouceur & Shane A. Blowes
 
-This project uses **community and biomass data**,derived from previously published **seed addition experiments**, this README points to the data used, and this repository provides the **R scripts** to investigate and understand models, process data, and generate results and figures.
+This project uses **community and biomass data**, derived from previously published **seed addition experiments**. The *SeedAddidionSynthesis* repository  README points to the data used, and this repository provides the **R scripts** to investigate and understand models, process data, and generate results and figures for the article:
+
+*Emma Ladouceur, W. Stanley Harpole, Shane A. Blowes, Christiane Roscher, Harald Auge, Eric W. Seabloom, Jonathan M. Chase. (2020) Reducing dispersal limitation via seed addition increases species richness but not above-ground biomass. Ecology Letters. Article DOI:  10.1111/ele.13566 & Data DOI: 10.6084/m9.figshare.12319682 *
+
 
 ### Data
 Four datasets associated with this project are found on Figshare DOI listed above.
@@ -29,4 +31,6 @@ Four scripts are provided in this repository.
 
 **Beta.R** Includes data, model objects and analyses used to understand the effect of seeded richness on the turnover and nestedness components of Beta diversity. This code produces Figure S4.
 
-**Citations** Please see details in the Figshare data description.
+**Citations** Please see details in the Figshare data description and in the listed paper.These data are made freely available for future research, but we request that the original publications attached to each dataset (please see paper Table 1 and Table S1) included in this synthesis and the publication attached to this repository be cited as the source of these values if some or all of them are used:
+
+*Emma Ladouceur, W. Stanley Harpole, Shane A. Blowes, Christiane Roscher, Harald Auge, Eric W. Seabloom, Jonathan M. Chase. (2020) Reducing dispersal limitation via seed addition increases species richness but not above-ground biomass. Ecology Letters. DOI:  10.1111/ele.13566*

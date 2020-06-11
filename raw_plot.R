@@ -6,16 +6,14 @@
 # #################################################################### ####
 
 
-rm(list=ls())
-detach("package:ggplot2", unload=TRUE)
-detach("package:plyr", unload=TRUE)
+# Libraries
 library(ggplot2)
 library(ggforce)
 library(patchwork)
+library(tidyverse)
 
-#setwd('~/Desktop/Academic/R code/SeedAdditionSynthesis/')
 setwd('~/Data/')
-plot<-read.csv("./SeedAdd_Plot_Level.csv", header=TRUE) %>%
+plot<-read.csv("./Data/SeedAdd_Plot_Level.csv", header=TRUE) %>%
   as_tibble()
 
 
@@ -23,13 +21,7 @@ colnames(plot)
 
 plot$Treatment<-plot$trt
 
-View(plot)
-
-# use grid_arrange_shared_legend function at the beginning of Main_Analysis.R
-# to create figures
-
-library(plyr)
-plot$Experiment<-revalue(plot$Experiment_, c("ASGA_Michigan"="Michigan", "California_Invade"="California.1","California_Prop_Limi"="California.2","CCR_04"="Cedar.Creek.4","CCR_093"="Cedar.Creek.93","Germany_Montane"="Montane","Halle"="Halle","Jena"="Jena","Jena2"="Jena.2","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field","Texas_Temple_Prarie"="Texas.Temple.Prairie"))
+plot$Experiment<-plyr::revalue(plot$Experiment_, c("ASGA_Michigan"="Michigan", "California_Invade"="California.1","California_Prop_Limi"="California.2","CCR_04"="Cedar.Creek.4","CCR_093"="Cedar.Creek.93","Germany_Montane"="Montane","Halle"="Halle","Jena"="Jena","Jena2"="Jena.2","Kansas_KUFS_LTER_Hay_Meadow_Exp_2"="Kansas.Hay.Meadow","Kansas_KUFS_LTER_Old_Field_Exp_1"="Kansas.Old.Field","Texas_Temple_Prarie"="Texas.Temple.Prairie"))
 plot$Experiment<-factor(as.character(plot$Experiment))
 
  # Figure S1 a) Richness
