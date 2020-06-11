@@ -4,7 +4,7 @@ Emma Ladouceur & Shane A. Blowes
 
 This project uses **community and biomass data**, derived from previously published **seed addition experiments**. The *SeedAddidionSynthesis* repository  README points to the data used, and this repository provides the **R scripts** to investigate and understand models, process data, and generate results and figures for the article:
 
-*Emma Ladouceur, W. Stanley Harpole, Shane A. Blowes, Christiane Roscher, Harald Auge, Eric W. Seabloom, Jonathan M. Chase. (2020) Reducing dispersal limitation via seed addition increases species richness but not above-ground biomass. Ecology Letters. Article DOI:  10.1111/ele.13566 & Data DOI: 10.6084/m9.figshare.12319682 *
+*Emma Ladouceur, W. Stanley Harpole, Shane A. Blowes, Christiane Roscher, Harald Auge, Eric W. Seabloom, Jonathan M. Chase. (2020) Reducing dispersal limitation via seed addition increases species richness but not above-ground biomass. Ecology Letters. Article DOI:  10.1111/ele.13566 & Data DOI: 10.6084/m9.figshare.12319682*
 
 
 ### Data
