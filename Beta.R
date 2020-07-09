@@ -14,6 +14,116 @@ library(ggplot2)
 
 
 
+
+# species data
+splong <-read.csv("./Data/SeedAdd_Sp_level.csv", header=TRUE) %>%
+  as_tibble()
+
+
+View(splong)
+#create a presence count column
+splong$pres<-1
+splong$unique.id<-splong$unique.id_
+
+#split the dataset into a list of datasets based on the value of experiment
+sp.long <- split(splong, splong$Experiment_) 
+list2env(sp.long, envir= .GlobalEnv) #split the list into separate dataframes
+
+
+levels(splong$Experiment_)
+colnames(splong)
+
+#create wide subsets of every experiment level
+ASGA_Michigan.w<- ASGA_Michigan %>% 
+  as_tibble() %>% 
+  mutate(species2 = paste0('sp_', species)) %>% 
+  group_by(unique.id,species2) %>% 
+  summarise(pres=n_distinct(pres)) %>%
+  spread(species2,pres,fill = 0)
+
+
+View(ASGA_Michigan.w)
+California_Invade.w<- California_Invade %>% 
+  as_tibble() %>% 
+  mutate(species2 = paste0('sp_', species)) %>% 
+  group_by(unique.id,species2) %>% 
+  summarise(pres=n_distinct(pres)) %>%
+  spread(species2,pres,fill = 0)
+
+California_Prop_Limi.w<- California_Prop_Limi %>% 
+  as_tibble() %>% 
+  mutate(species2 = paste0('sp_', species)) %>% 
+  group_by(unique.id,species2) %>% 
+  summarise(pres=n_distinct(pres)) %>%
+  spread(species2,pres,fill = 0)
+
+CCR_04.w<- CCR_04 %>% 
+  as_tibble() %>% 
+  mutate(species2 = paste0('sp_', species)) %>% 
+  group_by(unique.id,species2) %>% 
+  summarise(pres=n_distinct(pres)) %>%
+  spread(species2,pres,fill = 0)
+
+CCR_093.w<- CCR_093 %>% 
+  as_tibble() %>% 
+  mutate(species2 = paste0('sp_', species)) %>% 
+  group_by(unique.id,species2) %>% 
+  summarise(pres=n_distinct(pres)) %>%
+  spread(species2,pres,fill = 0)
+
+# summary(CCR_93.w)
+Germany_Montane.w<- Germany_Montane %>% 
+  as_tibble() %>% 
+  group_by(unique.id,species) %>% 
+  mutate(species2 = paste0('sp_', species)) %>% 
+  group_by(unique.id,species2) %>% 
+  summarise(pres=n_distinct(pres)) %>%
+  spread(species2,pres,fill = 0)
+
+Halle.w<- Halle %>% 
+  as_tibble() %>% 
+  mutate(species2 = paste0('sp_', species)) %>% 
+  group_by(unique.id,species2) %>% 
+  summarise(pres=n_distinct(pres)) %>%
+  spread(species2,pres,fill = 0)
+
+Jena.w<- Jena %>% 
+  as_tibble() %>% 
+  mutate(species2 = paste0('sp_', species)) %>% 
+  group_by(unique.id,species2) %>% 
+  summarise(pres=n_distinct(pres)) %>%
+  spread(species2,pres,fill = 0)
+
+Jena2.w<- Jena2 %>% 
+  as_tibble() %>% 
+  mutate(species2 = paste0('sp_', species)) %>% 
+  group_by(unique.id,species2) %>% 
+  summarise(pres=n_distinct(pres)) %>%
+  spread(species2,pres,fill = 0)
+
+
+Kansas_KUFS_LTER_Hay_Meadow_Exp_2.w<- Kansas_KUFS_LTER_Hay_Meadow_Exp_2 %>% 
+  as_tibble() %>% 
+  mutate(species2 = paste0('sp_', species)) %>% 
+  group_by(unique.id,species2) %>% 
+  summarise(pres=n_distinct(pres)) %>%
+  spread(species2,pres,fill = 0)
+
+Kansas_KUFS_LTER_Old_Field_Exp_1.w<- Kansas_KUFS_LTER_Old_Field_Exp_1 %>% 
+  as_tibble() %>% 
+  mutate(species2 = paste0('sp_', species)) %>% 
+  group_by(unique.id,species2) %>% 
+  summarise(pres=n_distinct(pres)) %>%
+  spread(species2,pres,fill = 0)
+
+Texas_Temple_Prarie.w<- Texas_Temple_Prarie %>% 
+  as_tibble() %>% 
+  mutate(species2 = paste0('sp_', species)) %>% 
+  group_by(unique.id,species2) %>% 
+  summarise(pres=n_distinct(pres)) %>%
+  spread(species2,pres,fill = 0)
+
+
 plot<-read.csv("./Data/SeedAdd_Plot_Level.csv", header=TRUE) %>%
   as_tibble()
 
@@ -135,11 +245,14 @@ wide.df <- bind_rows(
     nest_legacy(starts_with('sp_'), trt, seed.rich)
 )
 
+View(wide.df)
 
 # calculate the beta components
 wide.df <- wide.df %>% 
   mutate(beta = purrr::map(data, ~ beta_pairs(.x)))
 
+
+View(wide.df)
 
 beta.df = wide.df %>% 
   unnest_legacy(beta) %>%
@@ -147,6 +260,7 @@ beta.df = wide.df %>%
         c(Experiment_, site, block, yr.trt, group), sep = '_', remove = F) %>% 
   select(-group)
 
+View(beta.df)
 
 # write.csv(beta.df,"./Data/beta.df.csv")
 
