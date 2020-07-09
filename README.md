@@ -1,4 +1,4 @@
-# SeedAdditionSynthesis [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10.5281/3832024.svg)](https://doi.org/10.5281/zenodo.10.5281/3832024)
+# SeedAdditionSynthesis [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3832024.svg)](https://doi.org/10.5281/zenodo.3832024)
 
 Emma Ladouceur & [Shane A. Blowes](https://github.com/sablowes)
 
